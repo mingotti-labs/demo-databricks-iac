@@ -1,0 +1,21 @@
+# Terraform local state
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+override.tf
+override.tf.json
+
+# Variable files with secrets (use .tfvars.example for templates)
+*.tfvars
+!*.tfvars.example
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Editor
+.DS_Store
+.idea/
+*.swp
