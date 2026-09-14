@@ -1,0 +1,9 @@
+# Non-sensitive variables template — copy to dev.tfvars and fill in
+# Sensitive variables (tokens, keys, passwords) are in HCP Terraform variable sets
+
+aws_region            = "ap-southeast-2"
+environment           = "dev"
+catalog_name          = "mdp_dev"
+bucket_name           = "hoe-mdp-dev"
+databricks_host       = "https://dbc-e3197e2d-933b.cloud.databricks.com"
+mongodbatlas_org_id   = "6aa49e0b17258aa1f5264490"
