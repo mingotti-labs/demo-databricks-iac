@@ -1,9 +1,15 @@
 # Non-sensitive variables template — copy to dev.tfvars and fill in
-# Sensitive variables (tokens, keys, passwords) are in HCP Terraform variable sets
+# Sensitive credentials (aws_access_key_id, aws_secret_access_key, databricks_token,
+# neon_api_key, mongodbatlas_public_key, mongodbatlas_private_key) are Terraform variables
+# set in the HCP Terraform workspace variable set — never written here or committed.
 
-aws_region            = "ap-southeast-2"
-environment           = "dev"
-catalog_name          = "mdp_dev"
-bucket_name           = "hoe-mdp-dev"
-databricks_host       = "https://dbc-e3197e2d-933b.cloud.databricks.com"
-mongodbatlas_org_id   = "6aa49e0b17258aa1f5264490"
+aws_region          = "ap-southeast-2"
+environment         = "dev"
+bucket_name         = "hoe-mdp-dev"
+databricks_host     = "https://dbc-e3197e2d-933b.cloud.databricks.com"
+mongodbatlas_org_id = "6aa49e0b17258aa1f5264490"
+neon_org_id         = "org-xxxxxxxx-xxxxxxxx"
+
+# uc_external_id: leave empty on first apply. After first apply, set to the value of
+# `terraform output uc_external_id` and re-apply to harden the IAM trust policy.
+uc_external_id = ""
