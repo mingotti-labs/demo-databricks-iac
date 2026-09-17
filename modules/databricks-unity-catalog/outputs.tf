@@ -6,8 +6,8 @@ output "external_location_name" {
   value = databricks_external_location.this.id
 }
 
-output "catalog_names" {
-  value = [for c in databricks_catalog.this : c.name]
+output "catalog_name" {
+  value = databricks_catalog.this.name
 }
 
 output "external_id" {

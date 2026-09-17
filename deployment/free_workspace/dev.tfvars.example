@@ -5,11 +5,13 @@
 
 aws_region          = "ap-southeast-2"
 environment         = "dev"
-bucket_name         = "hoe-mdp-dev"
 databricks_host     = "https://dbc-e3197e2d-933b.cloud.databricks.com"
 mongodbatlas_org_id = "6aa49e0b17258aa1f5264490"
 neon_org_id         = "org-xxxxxxxx-xxxxxxxx"
 
-# uc_external_id: leave empty on first apply. After first apply, set to the value of
-# `terraform output uc_external_id` and re-apply to harden the IAM trust policy.
-uc_external_id = ""
+# environments: catalog + bucket name per environment. The default in variables.tf already
+# matches this project (hoe-mdp-dev/tst/prd, mdp_dev/tst/prd) — override here only if needed.
+
+# uc_external_ids: leave empty ({}) on first apply. After first apply, set from
+# `terraform output uc_external_ids` and re-apply to harden each environment's IAM trust policy.
+uc_external_ids = {}

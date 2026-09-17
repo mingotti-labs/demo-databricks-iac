@@ -1,19 +1,20 @@
 module "aws_s3" {
-  source = "./modules/aws-s3"
+  source   = "../../modules/aws-s3"
+  for_each = var.environments
 
-  bucket_name    = var.bucket_name
-  uc_external_id = var.uc_external_id
+  bucket_name    = each.value.bucket_name
+  uc_external_id = lookup(var.uc_external_ids, each.key, "")
 }
 
 module "neon" {
-  source = "./modules/neon"
+  source = "../../modules/neon"
 
   project_name = "mdp-${var.environment}"
   org_id       = var.neon_org_id
 }
 
 module "atlas" {
-  source = "./modules/atlas"
+  source = "../../modules/atlas"
 
   org_id       = var.mongodbatlas_org_id
   project_name = "mdp-${var.environment}"
@@ -21,14 +22,16 @@ module "atlas" {
 }
 
 module "unity_catalog" {
-  source = "./modules/databricks-unity-catalog"
+  source   = "../../modules/databricks-unity-catalog"
+  for_each = var.environments
 
-  iam_role_arn = module.aws_s3.iam_role_arn
-  bucket_name  = module.aws_s3.bucket_name
+  catalog_name = each.value.catalog_name
+  bucket_name  = module.aws_s3[each.key].bucket_name
+  iam_role_arn = module.aws_s3[each.key].iam_role_arn
 }
 
 module "secret_scopes" {
-  source = "./modules/databricks-secret-scopes"
+  source = "../../modules/databricks-secret-scopes"
 
   neon_host          = module.neon.host
   neon_database_name = module.neon.database_name
