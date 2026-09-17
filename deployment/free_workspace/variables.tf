@@ -8,9 +8,17 @@ variable "environment" {
   type        = string
 }
 
-variable "bucket_name" {
-  description = "Name of the S3 bucket used as the Unity Catalog external location."
-  type        = string
+variable "environments" {
+  description = "Per-environment catalog name and S3 bucket name. Defaults match this project's existing naming."
+  type = map(object({
+    catalog_name = string
+    bucket_name  = string
+  }))
+  default = {
+    dev = { catalog_name = "mdp_dev", bucket_name = "hoe-mdp-dev" }
+    tst = { catalog_name = "mdp_tst", bucket_name = "hoe-mdp-tst" }
+    prd = { catalog_name = "mdp_prd", bucket_name = "hoe-mdp-prd" }
+  }
 }
 
 variable "databricks_host" {
@@ -28,10 +36,10 @@ variable "neon_org_id" {
   type        = string
 }
 
-variable "uc_external_id" {
-  description = "Unity Catalog storage credential external_id. Empty on first apply; set from `terraform output uc_external_id` after first apply to harden the IAM trust policy (see design.md)."
-  type        = string
-  default     = ""
+variable "uc_external_ids" {
+  description = "Per-environment storage credential external_id, keyed the same as `environments`. Empty on first apply; set from `terraform output uc_external_ids` after first apply to harden each IAM trust policy (see design.md)."
+  type        = map(string)
+  default     = {}
 }
 
 variable "aws_access_key_id" {
