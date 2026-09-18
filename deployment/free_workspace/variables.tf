@@ -21,6 +21,12 @@ variable "environments" {
   }
 }
 
+variable "human_account_username" {
+  description = "Username (email) of the human account to add to FG Data Ops alongside the CI/CD service principal."
+  type        = string
+  default     = "handsonessential@gmail.com"
+}
+
 variable "databricks_host" {
   description = "URL of the Databricks workspace."
   type        = string

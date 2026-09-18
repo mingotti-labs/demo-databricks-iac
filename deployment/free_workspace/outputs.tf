@@ -10,3 +10,14 @@ output "catalog_names" {
 output "bucket_names" {
   value = { for k, m in module.aws_s3 : k => m.bucket_name }
 }
+
+output "cicd_client_id" {
+  description = "OAuth client_id of the CI/CD service principal. Hand off to GitHub Actions as DATABRICKS_CLIENT_ID."
+  value       = module.identity_governance.cicd_client_id
+}
+
+output "cicd_client_secret" {
+  description = "OAuth client_secret of the CI/CD service principal. Hand off to GitHub Actions as DATABRICKS_CLIENT_SECRET."
+  value       = module.identity_governance.cicd_client_secret
+  sensitive   = true
+}
