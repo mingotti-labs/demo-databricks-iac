@@ -62,6 +62,15 @@ resource "databricks_grants" "cicd_catalog_use" {
   }
 }
 
+module "neon_dev_connection" {
+  source = "../../modules/databricks-uc-connection-postgres"
+
+  name     = "neon_dev"
+  host     = module.neon.dev_host
+  user     = module.neon.dev_role_name
+  password = module.neon.dev_password
+}
+
 module "secret_scopes" {
   source = "../../modules/databricks-secret-scopes"
 
