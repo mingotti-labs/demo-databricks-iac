@@ -9,7 +9,7 @@ module "aws_s3" {
 module "neon" {
   source = "../../modules/neon"
 
-  project_name = "mdp-${var.environment}"
+  project_name = "mdp"
   org_id       = var.neon_org_id
 }
 
@@ -65,10 +65,10 @@ resource "databricks_grants" "cicd_catalog_use" {
 module "secret_scopes" {
   source = "../../modules/databricks-secret-scopes"
 
-  neon_host          = module.neon.host
-  neon_database_name = module.neon.database_name
-  neon_role_name     = module.neon.role_name
-  neon_password      = module.neon.password
+  neon_host          = module.neon.dev_host
+  neon_database_name = module.neon.dev_database_name
+  neon_role_name     = module.neon.dev_role_name
+  neon_password      = module.neon.dev_password
 
   atlas_connection_string = module.atlas.connection_string
   atlas_username          = module.atlas.username

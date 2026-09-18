@@ -1,10 +1,4 @@
-# source-databases Specification
-
-## Purpose
-
-Provisions the platform's relational and document source databases (Neon Postgres and MongoDB Atlas) as the origin systems for downstream ingestion.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Neon Postgres project
 A Neon Postgres project named `mdp` SHALL exist (free-tier serverless, region
@@ -32,17 +26,3 @@ branch, and `dev_host`/`dev_database_name`/`dev_role_name`/`dev_password` for th
 - **THEN** `main_host`, `main_database_name`, `main_role_name`, `main_password`,
   `dev_host`, `dev_database_name`, `dev_role_name`, and `dev_password` all appear as
   module outputs
-
-### Requirement: MongoDB Atlas cluster
-A MongoDB Atlas project SHALL exist under the configured Atlas organisation, containing one M0 (free-tier) cluster and a database user scoped to the project with read/write access.
-
-#### Scenario: Atlas cluster provisioned
-- **WHEN** the atlas module is applied
-- **THEN** an Atlas project, M0 cluster, and database user with read/write access exist, and `terraform plan` shows the corresponding resources created
-
-### Requirement: Atlas outputs for downstream wiring
-Atlas connection details (`connection_string`, `username`, `password`) SHALL be available as Terraform outputs for use by the secret-scopes module.
-
-#### Scenario: Atlas outputs available
-- **WHEN** `terraform plan` runs with the atlas module called from root
-- **THEN** `connection_string`, `username`, and `password` appear as module outputs
