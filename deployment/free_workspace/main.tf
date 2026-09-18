@@ -84,6 +84,20 @@ resource "databricks_grants" "cicd_neon_dev_connection_use" {
   }
 }
 
+module "git_repo_iac" {
+  source = "../../modules/databricks-git-repo"
+
+  url  = "https://github.com/mingotti-labs/demo-databricks-iac"
+  path = "/Repos/Shared/demo-databricks-iac"
+}
+
+module "git_repo_mdp" {
+  source = "../../modules/databricks-git-repo"
+
+  url  = "https://github.com/mingotti-labs/demo-databricks-mdp"
+  path = "/Repos/Shared/demo-databricks-mdp"
+}
+
 module "secret_scopes" {
   source = "../../modules/databricks-secret-scopes"
 
