@@ -49,6 +49,21 @@ New service principals should NOT be added to the built-in `admins` group withou
 specific, evidenced reason (see the `phase1-identity-governance` change's design.md
 for why).
 
+## Source databases
+
+- **Neon Postgres** (`modules/neon/`): project `mdp` (renamed from `mdp-dev` —
+  it's the one and only Neon instance for the whole platform, not a dev-specific
+  one). Two branches, mirroring git convention: `main` (stable/production-equivalent
+  data line, no rename needed — same as git's `main` not being renamed to "prod")
+  and `dev` (forked from `main`, where active development and downstream ingestion
+  work happens). The `neon-postgres` secret scope points at **`dev`**, not `main`.
+  Neither branch is protected — Neon's free tier doesn't support protected branches
+  (`BRANCHES_PROTECTED_LIMIT_EXCEEDED`, confirmed via a real apply attempt); be
+  deliberate before any destructive operation against `main`.
+- **MongoDB Atlas** (`modules/atlas/`): project still named `mdp-dev`. No branching
+  feature to mirror the Neon pattern with, so this naming inconsistency between the
+  two source databases is accepted rather than "fixed" to match.
+
 ## Workflow
 
 @CONTRIBUTING.md
