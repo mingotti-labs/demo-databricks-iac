@@ -76,6 +76,16 @@ Naming: see NAMING.md.
   browse it, then drop it (see `phase3a-neon-uc-connection`'s tasks.md for the
   exact commands).
 
+## Workspace Git Folders
+
+Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace
+as Git Folders (`modules/databricks-git-repo/`), at `/Repos/Shared/<repo-name>` —
+not a personal `/Repos/<user>/<repo-name>` path (the provider's default if `path`
+is left unset). Terraform-managed like everything else here, not the
+`databricks repos create` CLI or the workspace UI. Browse/dev convenience only —
+no auto-pull-on-push; nothing in either bundle or Terraform pipeline reads from
+these paths.
+
 ## Workflow
 
 @CONTRIBUTING.md
