@@ -30,6 +30,38 @@ module "unity_catalog" {
   iam_role_arn = module.aws_s3[each.key].iam_role_arn
 }
 
+module "identity_governance" {
+  source = "../../modules/databricks-identity-governance"
+
+  human_account_username = var.human_account_username
+}
+
+module "access_groups" {
+  source   = "../../modules/databricks-access-groups"
+  for_each = var.environments
+
+  catalog_name = module.unity_catalog[each.key].catalog_name
+}
+
+resource "databricks_group_member" "data_ops_read_access" {
+  for_each  = var.environments
+  group_id  = module.access_groups[each.key].group_id
+  member_id = module.identity_governance.group_ids.data_ops
+}
+
+# Real, working access mechanism for now -- see main.tf's access_groups comment and
+# design.md's Migration Plan (phase1-access-governance) for why membership in the AG
+# groups above doesn't grant anything on this workspace/edition.
+resource "databricks_grants" "cicd_catalog_use" {
+  for_each = var.environments
+  catalog  = module.unity_catalog[each.key].catalog_name
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["USE_CATALOG"]
+  }
+}
+
 module "secret_scopes" {
   source = "../../modules/databricks-secret-scopes"
 

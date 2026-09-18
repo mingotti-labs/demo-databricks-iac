@@ -126,7 +126,7 @@ resource "time_sleep" "iam_propagation" {
   create_duration = "20s"
 
   triggers = {
-    assume_role_policy = data.aws_iam_policy_document.assume_role.json
+    assume_role_policy   = data.aws_iam_policy_document.assume_role.json
     bucket_access_policy = data.aws_iam_policy_document.bucket_access.json
   }
 }

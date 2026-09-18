@@ -8,9 +8,9 @@ terraform {
 }
 
 resource "neon_project" "this" {
-  name                       = var.project_name
-  region_id                  = var.region_id
-  org_id                     = var.org_id
+  name                      = var.project_name
+  region_id                 = var.region_id
+  org_id                    = var.org_id
   history_retention_seconds = var.history_retention_seconds
 
   branch {

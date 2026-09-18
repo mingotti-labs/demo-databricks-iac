@@ -23,6 +23,32 @@ global ~/.claude/CLAUDE.md.
   single workspace, and the corporate multi-workspace pattern respectively) — do not
   build these out until there's a real need.
 
+## Identity & groups
+
+Two group axes, both Terraform-managed — add members by editing the relevant module,
+not the workspace UI:
+
+- **`FG <Name>` — functional groups** (`modules/databricks-identity-governance/`):
+  `FG Platform Engineering` (deployment/infra), `FG Data Engineering` (pipeline/job
+  execution), `FG Data Ops` (operational/cross-cutting — where automation identities
+  like CI/CD service principals and their managing human account live until a
+  narrower group fits). Model *what function a principal serves*.
+- **`AG Catalog <name> READ` — Access Groups** (`modules/databricks-access-groups/`):
+  one per environment catalog, intended to model *what a principal can access*, with
+  functional groups joining the Access Groups relevant to their function (`FG Data
+  Ops` is a member of all three today). **Currently a reserved placeholder, not a
+  working grant mechanism** — Unity Catalog grants resolve principals against
+  account-level identities, and Free Edition's API only lets Terraform create
+  workspace-level groups, so granting one fails with `Could not find principal with
+  name ...` (confirmed empirically, not a bug in this repo's code; see the
+  `phase1-access-governance` change's design.md for the full investigation). Real
+  catalog access is a direct `databricks_grants` to the principal for now, same
+  mechanism `phase1-identity-governance` established.
+
+New service principals should NOT be added to the built-in `admins` group without a
+specific, evidenced reason (see the `phase1-identity-governance` change's design.md
+for why).
+
 ## Workflow
 
 @CONTRIBUTING.md
