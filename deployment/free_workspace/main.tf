@@ -71,6 +71,19 @@ module "neon_dev_connection" {
   password = module.neon.dev_password
 }
 
+# UC Connections aren't visible to a principal by default (only the creator/admins).
+# The CI/CD SP needs this to deploy demo-databricks-mdp's Lakeflow Connect pipeline
+# that references neon_dev -- confirmed via a real deploy failure ("Failed to
+# retrieve connection 'neon_dev' from Unity Catalog"), not assumed upfront.
+resource "databricks_grants" "cicd_neon_dev_connection_use" {
+  foreign_connection = module.neon_dev_connection.connection_name
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["USE_CONNECTION"]
+  }
+}
+
 module "secret_scopes" {
   source = "../../modules/databricks-secret-scopes"
 
