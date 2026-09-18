@@ -1,0 +1,30 @@
+# uc-connections Specification
+
+## Purpose
+TBD - created by archiving change phase3a-neon-uc-connection. Update Purpose after archive.
+
+## Requirements
+
+### Requirement: Neon dev UC Connection
+A Unity Catalog `CONNECTION` named `neon_dev` SHALL exist, type `POSTGRESQL`,
+authenticated against the Neon `dev` branch's own compute endpoint (not `main`'s).
+It SHALL NOT set an `sslmode` option — this connection type does not support one
+(confirmed via a real apply rejection); Neon negotiates SSL on its own.
+
+#### Scenario: Connection created
+- **WHEN** the uc-connections resources are applied
+- **THEN** a UC Connection named `neon_dev` exists with `connection_type =
+  POSTGRESQL`, and its `host` option matches the Neon `dev` branch's compute
+  endpoint
+
+### Requirement: Connectivity verified, not assumed
+The connection SHALL be confirmed reachable via a live query against it, not
+inferred from `terraform apply` succeeding alone.
+
+#### Scenario: Live connectivity check
+- **WHEN** a temporary foreign catalog is created using the `neon_dev` connection
+  and its schemas listed (`CREATE FOREIGN CATALOG ... USING CONNECTION neon_dev`,
+  then `SHOW SCHEMAS IN <that catalog>`)
+- **THEN** it succeeds and lists at least the `public` schema, proving real
+  network reachability and authentication to the Neon `dev` branch; the temporary
+  catalog is dropped afterward and is not part of the deployed design

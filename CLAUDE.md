@@ -64,6 +64,18 @@ for why).
   feature to mirror the Neon pattern with, so this naming inconsistency between the
   two source databases is accepted rather than "fixed" to match.
 
+## UC Connections
+
+- **`neon_dev`** (`modules/databricks-uc-connection-postgres/`): points at Neon's
+  `dev` branch. Consumed by `phase3a-lakeflow-connect-neon` in
+  `demo-databricks-mdp` — its ingestion pipeline references this connection by
+  name. No `sslmode` option — this connection type doesn't support one (confirmed
+  via a real apply rejection); Neon negotiates SSL on its own. To verify
+  connectivity to any UC Connection, `SHOW SCHEMAS IN CONNECTION <name>` is not
+  valid syntax — use a temporary `CREATE FOREIGN CATALOG ... USING CONNECTION`,
+  browse it, then drop it (see `phase3a-neon-uc-connection`'s tasks.md for the
+  exact commands).
+
 ## Workflow
 
 @CONTRIBUTING.md

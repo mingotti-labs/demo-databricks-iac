@@ -29,20 +29,26 @@ the identity-governance groups — lives in a module, composed at the root. A UC
 Connection is no different in kind, and a generic (not Neon-specific) module means a
 future second Postgres connection doesn't require touching this one's internals.
 
-**`sslmode = "require"` set explicitly.**
-Neon's own documented connection strings always include this. The Databricks
-connection-options docs list `sslmode` as optional with no stated default. Rather
-than trust an unstated default to happen to be safe, it's set explicitly — the same
-"verify, don't assume" instinct that shaped the rest of this project's infra work.
+**No `sslmode` option — reverted after a real apply rejection.**
+The intent was `sslmode = "require"`, matching Neon's own documented connection
+strings and the general Databricks docs on connection options. The actual API
+rejected it: `does not support the following option(s): sslmode. Supported
+options: userProvidedServerCertificate,host,port,trustServerCertificate,user,
+password` — this connection type's real, current option set is narrower than the
+general documentation implied. Removed; Neon negotiates SSL on its own regardless
+of what the connection object specifies.
 
-**Verified via a live query, not `terraform apply` succeeding alone.**
+**Verified via a live query through a temporary foreign catalog, not `terraform
+apply` succeeding alone — and not the SQL first assumed, either.**
 `apply` succeeding proves the Databricks API accepted the connection's
 configuration; it doesn't prove Databricks can actually reach and authenticate to
-Neon over the network. Those are different claims. tasks.md includes an explicit
-live-query verification step (`SHOW SCHEMAS IN CONNECTION neon_dev` or equivalent)
-run and its real output recorded, specifically so a connectivity problem is caught
-here — not discovered later when `mdp`'s pipeline fails for a reason that traces
-back to this object.
+Neon over the network. Those are different claims, and the first syntax tried to
+close that gap (`SHOW SCHEMAS IN CONNECTION neon_dev`) turned out not to exist
+either (`PARSE_SYNTAX_ERROR`). The real, documented mechanism is a temporary
+`CREATE FOREIGN CATALOG ... USING CONNECTION`, browsed with `SHOW SCHEMAS IN
+<that catalog>`, then dropped — heavier than hoped, but definitive: it returned
+Neon's real schemas (`public`, `pg_catalog`, `information_schema`). See tasks.md
+for the exact commands and output.
 
 ## Risks / Trade-offs
 
