@@ -23,27 +23,25 @@ global ~/.claude/CLAUDE.md.
   single workspace, and the corporate multi-workspace pattern respectively) — do not
   build these out until there's a real need.
 
+## Naming conventions
+
+@NAMING.md
+
 ## Identity & groups
 
-Two group axes, both Terraform-managed — add members by editing the relevant module,
-not the workspace UI:
+Both group axes (naming: see NAMING.md) are Terraform-managed — add members by
+editing the relevant module, not the workspace UI:
+`modules/databricks-identity-governance/` (functional groups),
+`modules/databricks-access-groups/` (Access Groups).
 
-- **`FG <Name>` — functional groups** (`modules/databricks-identity-governance/`):
-  `FG Platform Engineering` (deployment/infra), `FG Data Engineering` (pipeline/job
-  execution), `FG Data Ops` (operational/cross-cutting — where automation identities
-  like CI/CD service principals and their managing human account live until a
-  narrower group fits). Model *what function a principal serves*.
-- **`AG Catalog <name> READ` — Access Groups** (`modules/databricks-access-groups/`):
-  one per environment catalog, intended to model *what a principal can access*, with
-  functional groups joining the Access Groups relevant to their function (`FG Data
-  Ops` is a member of all three today). **Currently a reserved placeholder, not a
-  working grant mechanism** — Unity Catalog grants resolve principals against
-  account-level identities, and Free Edition's API only lets Terraform create
-  workspace-level groups, so granting one fails with `Could not find principal with
-  name ...` (confirmed empirically, not a bug in this repo's code; see the
-  `phase1-access-governance` change's design.md for the full investigation). Real
-  catalog access is a direct `databricks_grants` to the principal for now, same
-  mechanism `phase1-identity-governance` established.
+`AG Catalog <name> READ` groups are **currently a reserved placeholder, not a
+working grant mechanism** — Unity Catalog grants resolve principals against
+account-level identities, and Free Edition's API only lets Terraform create
+workspace-level groups, so granting one fails with `Could not find principal with
+name ...` (confirmed empirically, not a bug in this repo's code; see the
+`phase1-access-governance` change's design.md for the full investigation). Real
+catalog access is a direct `databricks_grants` to the principal for now, same
+mechanism `phase1-identity-governance` established.
 
 New service principals should NOT be added to the built-in `admins` group without a
 specific, evidenced reason (see the `phase1-identity-governance` change's design.md
@@ -51,20 +49,22 @@ for why).
 
 ## Source databases
 
-- **Neon Postgres** (`modules/neon/`): project `mdp` (renamed from `mdp-dev` —
-  it's the one and only Neon instance for the whole platform, not a dev-specific
-  one). Two branches, mirroring git convention: `main` (stable/production-equivalent
-  data line, no rename needed — same as git's `main` not being renamed to "prod")
-  and `dev` (forked from `main`, where active development and downstream ingestion
+Naming: see NAMING.md.
+
+- **Neon Postgres** (`modules/neon/`): `main` (stable/production-equivalent data
+  line, no rename needed — same as git's `main` not being renamed to "prod") and
+  `dev` (forked from `main`, where active development and downstream ingestion
   work happens). The `neon-postgres` secret scope points at **`dev`**, not `main`.
   Neither branch is protected — Neon's free tier doesn't support protected branches
   (`BRANCHES_PROTECTED_LIMIT_EXCEEDED`, confirmed via a real apply attempt); be
   deliberate before any destructive operation against `main`.
-- **MongoDB Atlas** (`modules/atlas/`): project still named `mdp-dev`. No branching
-  feature to mirror the Neon pattern with, so this naming inconsistency between the
-  two source databases is accepted rather than "fixed" to match.
+- **MongoDB Atlas** (`modules/atlas/`): no branching feature to mirror the Neon
+  pattern with, so the naming inconsistency between the two source databases (see
+  NAMING.md) is accepted rather than "fixed" to match.
 
 ## UC Connections
+
+Naming: see NAMING.md.
 
 - **`neon_dev`** (`modules/databricks-uc-connection-postgres/`): points at Neon's
   `dev` branch. Consumed by `phase3a-lakeflow-connect-neon` in
