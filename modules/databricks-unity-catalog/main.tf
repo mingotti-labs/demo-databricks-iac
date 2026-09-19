@@ -38,6 +38,7 @@ locals {
     bronze_atlas             = "Raw MongoDB Atlas ingestion landing zone"
     bronze_atlas_history     = "Full history / before-image records for Atlas"
     bronze_atlas_publish     = "Publish-ready view of Atlas bronze data"
+    bronze_clickstream       = "Raw clickstream file-drop ingestion landing zone"
     gold_analytics_gateway   = "Analytics-facing gold layer"
     gold_integration_gateway = "Integration-facing gold layer"
     gold_ai_gateway          = "AI/ML-facing gold layer"

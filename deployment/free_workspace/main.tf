@@ -84,6 +84,17 @@ resource "databricks_grants" "cicd_neon_dev_connection_use" {
   }
 }
 
+module "clickstream_volume" {
+  source   = "../../modules/databricks-uc-volume"
+  for_each = var.environments
+
+  catalog_name = module.unity_catalog[each.key].catalog_name
+  schema_name  = "bronze_clickstream"
+  volume_name  = "s3_clickstream_raw"
+
+  depends_on = [module.unity_catalog]
+}
+
 module "git_repo_iac" {
   source = "../../modules/databricks-git-repo"
 
