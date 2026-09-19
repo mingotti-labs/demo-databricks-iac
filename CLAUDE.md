@@ -47,6 +47,32 @@ New service principals should NOT be added to the built-in `admins` group withou
 specific, evidenced reason (see the `phase1-identity-governance` change's design.md
 for why).
 
+### CI/CD service principal pipeline execution
+
+The CI/CD SP needs more than `USE_CATALOG` to actually run a pipeline —
+`BROWSE` on the catalog (cluster initialization) and `USE_SCHEMA` +
+`CREATE_TABLE` on its target schema (creating/writing its managed table) are
+both required, granted across every bronze schema up front
+(`databricks_grants.cicd_catalog_use`/`cicd_schema_use`). Both were discovered
+via real pipeline run failures, not anticipated — see
+`phase3b-cicd-pipeline-grants`'s design.md.
+
+A job/pipeline's execution identity (`run_as_user_name`) is a property of the
+resource itself, not of whoever triggers the run — a sufficiently-privileged
+human can trigger a CI/CD-SP-owned resource via CLI/API and it still executes
+(and fails, or succeeds) under the SP's own permissions. No local
+machine-to-machine credentials are needed to run something "as" the SP; just
+target that resource's ID directly.
+
+**Deleting a Lakeflow Declarative Pipeline deletes its managed tables by
+default** (confirmed via Databricks' own docs — a beta `cascade=false` option
+exists to keep them, but its reattachment mechanics aren't well-documented
+enough to rely on). This is why the CI/CD SP's dev-prefixed pipeline/job
+copies (`[dev svc_cicd_github] ...`) are the canonical, durable ones for this
+project — the human-identity dev copies (`[dev handsonessential] ...`) are
+disposable personal-iteration artifacts, safe to delete without losing
+anything real, and should never be relied on to hold real data.
+
 ## Source databases
 
 Naming: see NAMING.md.
