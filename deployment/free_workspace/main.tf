@@ -100,6 +100,16 @@ resource "databricks_grants" "cicd_schema_use" {
     principal  = module.identity_governance.cicd_client_id
     privileges = ["USE_SCHEMA", "CREATE_TABLE"]
   }
+
+  # Read access for the human operator -- table ownership passes to whichever
+  # identity's pipeline creates it (usually the CI/CD SP now), and Unity
+  # Catalog doesn't extend implicit SELECT to workspace-admin group members
+  # for objects they don't own (confirmed via a real query failure: even as a
+  # workspace admin, SELECT on a CI/CD-SP-created table was denied).
+  grant {
+    principal  = var.human_account_username
+    privileges = ["SELECT"]
+  }
 }
 
 module "neon_dev_connection" {
@@ -133,6 +143,22 @@ module "clickstream_volume" {
   volume_name  = "s3_clickstream_raw"
 
   depends_on = [module.unity_catalog]
+}
+
+# READ_VOLUME + WRITE_VOLUME added after a real job run failure --
+# "PERMISSION_DENIED: User does not have READ VOLUME on Volume
+# mdp_dev.bronze_clickstream.s3_clickstream_raw" -- the exact risk flagged as
+# unverified in phase3b-clickstream-volume's design.md, now confirmed real.
+# Catalog/schema-level grants don't extend to volume contents; volumes need
+# their own explicit grant, same as UC Connections needed USE_CONNECTION.
+resource "databricks_grants" "cicd_clickstream_volume_use" {
+  for_each = var.environments
+  volume   = "${module.unity_catalog[each.key].catalog_name}.bronze_clickstream.${module.clickstream_volume[each.key].volume_name}"
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
 }
 
 module "git_repo_iac" {
