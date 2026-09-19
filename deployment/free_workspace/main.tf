@@ -56,9 +56,49 @@ resource "databricks_grants" "cicd_catalog_use" {
   for_each = var.environments
   catalog  = module.unity_catalog[each.key].catalog_name
 
+  # BROWSE added after a real pipeline run failure: USE_CATALOG alone isn't
+  # enough for a pipeline cluster to initialize against Unity Catalog --
+  # "PERMISSION_DENIED: User does not have BROWSE on Catalog 'mdp_dev'"
+  # (confirmed via a real bundle-deployed pipeline run as the CI/CD SP, not
+  # assumed upfront -- same discovery pattern as neon_dev's USE_CONNECTION gap).
   grant {
     principal  = module.identity_governance.cicd_client_id
-    privileges = ["USE_CATALOG"]
+    privileges = ["USE_CATALOG", "BROWSE"]
+  }
+}
+
+locals {
+  # Bronze-family schemas any CI/CD-run pipeline in this project writes into.
+  # Kept in sync manually with modules/databricks-unity-catalog's local.schemas
+  # -- see that module for the authoritative schema list.
+  cicd_writable_schemas = [
+    "bronze_neon", "bronze_neon_publish",
+    "bronze_atlas", "bronze_atlas_publish",
+    "bronze_clickstream", "bronze_clickstream_publish",
+  ]
+  cicd_schema_grants = {
+    for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :
+    "${pair[0]}.${pair[1]}" => {
+      catalog_name = module.unity_catalog[pair[0]].catalog_name
+      schema_name  = pair[1]
+    }
+  }
+}
+
+# USE_SCHEMA + CREATE_TABLE added after a real pipeline run failure --
+# "PERMISSION_DENIED: User does not have CREATE TABLE and USE SCHEMA on Schema
+# 'mdp_dev.bronze_neon'" -- catalog-level USE_CATALOG/BROWSE alone isn't
+# enough for a pipeline to create/write its own managed table. Granted across
+# every bronze schema up front (not discovered once per schema) since every
+# ingestion/SCD pipeline in this project needs the same access on its own
+# target schema.
+resource "databricks_grants" "cicd_schema_use" {
+  for_each = local.cicd_schema_grants
+  schema   = "${each.value.catalog_name}.${each.value.schema_name}"
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["USE_SCHEMA", "CREATE_TABLE"]
   }
 }
 
