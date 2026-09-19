@@ -28,3 +28,13 @@ of each — this file covers naming only.
 ## UC Connections
 
 - `<source>_<branch-or-env>` — e.g. `neon_dev` (Neon's `dev` branch).
+
+## UC Volumes
+
+- `<service>_<source-system>_raw` — e.g. `s3_clickstream_raw`. One volume per
+  source system, living inside that source's own `bronze_<source>` schema — not
+  shared across source systems, so UC volume-level grants (`READ VOLUME` /
+  `WRITE VOLUME`) stay scoped to one source at a time (same reasoning as one
+  schema per source system). Volume storage reuses the environment's existing
+  bucket (the same one backing the catalog's `storage_root`/external location)
+  — no new bucket, storage credential, or external location per source system.

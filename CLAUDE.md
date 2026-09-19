@@ -76,6 +76,23 @@ Naming: see NAMING.md.
   browse it, then drop it (see `phase3a-neon-uc-connection`'s tasks.md for the
   exact commands).
 
+## UC Volumes
+
+Naming: see NAMING.md.
+
+- **`s3_clickstream_raw`** (`modules/databricks-uc-volume/`): one `MANAGED`
+  volume per environment, inside that environment's `bronze_clickstream`
+  schema. Consumed by `phase3b-clickstream-autoloader` in `demo-databricks-mdp`
+  — its Auto Loader pipeline reads synthetic clickstream files from this
+  volume's path. Multi-env from the start (unlike `neon_dev`), since the
+  source data is entirely synthetic — each environment generates and lands its
+  own independent data. Storage reuses each environment's existing bucket (the
+  same one backing that catalog's `storage_root`) — no new bucket, storage
+  credential, or external location. Whether the CI/CD service principal needs
+  an explicit grant to read/write it (beyond the existing catalog-level
+  `USE_CATALOG` grant) was left unverified here — see
+  `phase3b-clickstream-volume`'s design.md.
+
 ## Workspace Git Folders
 
 Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace
@@ -93,6 +110,19 @@ these paths.
 Non-trivial changes go through OpenSpec first: propose (`openspec change new <name>`),
 agree the spec, implement, archive. See `openspec/` and each change's `design.md` for
 the decision record behind what's built.
+
+## Running Terraform locally
+
+`environment` and `uc_external_ids` have no persisted value in the HCP
+Terraform workspace — they must be passed explicitly on every local
+`plan`/`apply` (`-var="environment=dev" -var='uc_external_ids={"dev":"...",
+"tst":"...","prd":"..."}'`, current values via `terraform output -json
+uc_external_ids`). Omitting `uc_external_ids` doesn't just no-op — it plans to
+*strip* the `sts:ExternalId` condition from each environment's IAM trust
+policy (reverting to the variable's empty default), a real security downgrade
+that looked like unrelated drift the first time it was hit. Always read the
+full plan output for unexpected changes/destroys before applying, even when
+the change you're making is purely additive.
 
 ## Guardrails — never do without explicit confirmation
 
