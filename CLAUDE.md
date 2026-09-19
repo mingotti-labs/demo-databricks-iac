@@ -93,6 +93,20 @@ Naming: see NAMING.md.
   `USE_CATALOG` grant) was left unverified here — see
   `phase3b-clickstream-volume`'s design.md.
 
+## Bronze schema shape
+
+Each source system gets exactly two bronze-family schemas: `bronze_<source>`
+(raw, source-faithful landing) and `bronze_<source>_publish` (governed — SCD1/
+SCD2 tables, and future row/column security). There is deliberately no
+`bronze_<source>_history` schema — Phase 1 reserved one per source
+(`bronze_neon_history`, `bronze_atlas_history`) for full change-history/CDC
+replay, but both sat empty (confirmed via `databricks tables list` before
+removal), and that purpose is now served by `<table>_scd2` tables inside
+`_publish` instead — more directly queryable than a raw history table would
+have been. See `phase3b-bronze-schema-simplification`'s design.md for the full
+reasoning. SCD1/SCD2 tables themselves are built in `demo-databricks-mdp`, not
+here — this repo only provisions the schema.
+
 ## Workspace Git Folders
 
 Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace
