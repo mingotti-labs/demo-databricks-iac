@@ -133,6 +133,14 @@ have been. See `phase3b-bronze-schema-simplification`'s design.md for the full
 reasoning. SCD1/SCD2 tables themselves are built in `demo-databricks-mdp`, not
 here — this repo only provisions the schema.
 
+**`bronze_ungm`/`bronze_ungm_publish`** (Phase 3c, UNGM UNSPSC API): the
+smallest source-system onboarding so far — the UNGM public API needs no
+credential, connection, or volume, just the schema pair. Consumed by an
+upcoming `demo-databricks-mdp` change. CI/CD SP schema-level grants
+(`USE_SCHEMA`/`CREATE_TABLE`) applied proactively this time, not
+discovered via a failure — see "CI/CD service principal pipeline
+execution" above.
+
 ## Workspace Git Folders
 
 Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace
