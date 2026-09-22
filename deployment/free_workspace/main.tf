@@ -94,13 +94,24 @@ locals {
 # every bronze schema up front (not discovered once per schema) since every
 # ingestion/SCD pipeline in this project needs the same access on its own
 # target schema.
+#
+# CREATE_MATERIALIZED_VIEW added after a second real failure --
+# "PERMISSION_DENIED: User does not have CREATE MATERIALIZED VIEW on Schema
+# 'mdp_dev.bronze_acnc'" -- confirmed CREATE_TABLE does NOT cover Materialized
+# Views in Unity Catalog (it's a genuinely separate privilege; Streaming
+# Tables have no such separate privilege, they fall under CREATE_TABLE,
+# confirmed via the provider's own privilege enum). UNGM's unspsc_public_raw
+# is also a Materialized View and had never actually been run under the
+# CI/CD SP before this was found (confirmed via an empty
+# `pipelines list-updates` on its SP-owned copy) -- applied proactively here
+# rather than per-schema, since any future MV-based source hits the same gap.
 resource "databricks_grants" "cicd_schema_use" {
   for_each = local.cicd_schema_grants
   schema   = "${each.value.catalog_name}.${each.value.schema_name}"
 
   grant {
     principal  = module.identity_governance.cicd_client_id
-    privileges = ["USE_SCHEMA", "CREATE_TABLE"]
+    privileges = ["USE_SCHEMA", "CREATE_TABLE", "CREATE_MATERIALIZED_VIEW"]
   }
 
   # Read access for the human operator -- table ownership passes to whichever
