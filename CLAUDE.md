@@ -57,6 +57,17 @@ both required, granted across every bronze schema up front
 via real pipeline run failures, not anticipated — see
 `phase3b-cicd-pipeline-grants`'s design.md.
 
+**`CREATE_MATERIALIZED_VIEW` is a separate UC privilege from
+`CREATE_TABLE`** — `CREATE_TABLE` does not cover Materialized Views,
+confirmed via a real pipeline run failure (`PERMISSION_DENIED: User does
+not have CREATE MATERIALIZED VIEW on Schema 'mdp_dev.bronze_acnc'`) and via
+the Terraform provider's own privilege enum. There is no equivalent
+separate privilege for Streaming Tables — those fall under `CREATE_TABLE`,
+which is why Neon's and clickstream's Streaming-Table pipelines never hit
+this. Granted alongside `USE_SCHEMA`/`CREATE_TABLE` in the same
+`cicd_schema_use` grant — see `phase3d-cicd-materialized-view-grant`'s
+design.md.
+
 A job/pipeline's execution identity (`run_as_user_name`) is a property of the
 resource itself, not of whoever triggers the run — a sufficiently-privileged
 human can trigger a CI/CD-SP-owned resource via CLI/API and it still executes
