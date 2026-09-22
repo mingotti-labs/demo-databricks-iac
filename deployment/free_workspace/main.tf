@@ -76,6 +76,7 @@ locals {
     "bronze_atlas", "bronze_atlas_publish",
     "bronze_clickstream", "bronze_clickstream_publish",
     "bronze_ungm", "bronze_ungm_publish",
+    "bronze_acnc", "bronze_acnc_publish",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :

@@ -141,6 +141,13 @@ upcoming `demo-databricks-mdp` change. CI/CD SP schema-level grants
 discovered via a failure — see "CI/CD service principal pipeline
 execution" above.
 
+**`bronze_acnc`/`bronze_acnc_publish`** (Phase 3d, ACNC Charity Register):
+same shape as UNGM's — data.gov.au's public CKAN Data API needs no
+credential, connection, or volume either, just the schema pair. Consumed
+by an upcoming `demo-databricks-mdp` change (a reusable custom PySpark
+Data Source connector, not a one-off fetch helper like UNGM's). CI/CD SP
+schema-level grants applied proactively, same as UNGM's.
+
 ## Workspace Git Folders
 
 Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace
