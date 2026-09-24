@@ -56,3 +56,13 @@ resource "databricks_secret" "atlas_password" {
   key          = "password"
   string_value = var.atlas_password
 }
+
+resource "databricks_secret_scope" "airroi" {
+  name = "airroi"
+}
+
+resource "databricks_secret" "airroi_api_key" {
+  scope        = databricks_secret_scope.airroi.id
+  key          = "api_key"
+  string_value = var.airroi_api_key
+}

@@ -44,6 +44,8 @@ locals {
     bronze_acnc_publish        = "Publish-ready view of ACNC bronze data (incl. SCD1/SCD2 tables)"
     bronze_nsw_spatial         = "Raw NSW Spatial Services ingestion landing zone"
     bronze_nsw_spatial_publish = "Publish-ready view of NSW Spatial Services bronze data (incl. SCD1/SCD2 tables)"
+    bronze_airroi              = "Raw AirROI market intelligence ingestion landing zone"
+    bronze_airroi_publish      = "Publish-ready view of AirROI bronze data (incl. SCD2 table)"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
     gold_ai_gateway            = "AI/ML-facing gold layer"

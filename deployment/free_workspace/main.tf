@@ -78,6 +78,7 @@ locals {
     "bronze_ungm", "bronze_ungm_publish",
     "bronze_acnc", "bronze_acnc_publish",
     "bronze_nsw_spatial", "bronze_nsw_spatial_publish",
+    "bronze_airroi", "bronze_airroi_publish",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :
@@ -200,4 +201,6 @@ module "secret_scopes" {
   atlas_connection_string = module.atlas.connection_string
   atlas_username          = module.atlas.username
   atlas_password          = module.atlas.password
+
+  airroi_api_key = var.airroi_api_key
 }

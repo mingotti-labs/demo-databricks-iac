@@ -171,6 +171,32 @@ schema-level grants, **including `CREATE_MATERIALIZED_VIEW` from the
 start** (that gap was discovered reactively for ACNC — see "CI/CD service
 principal pipeline execution" above — applied proactively here instead).
 
+**`bronze_airroi`/`bronze_airroi_publish`** (Phase 3h, AirROI market
+intelligence): this project's **first source with a real, paid,
+authenticated API** — every prior source is either free/public or a
+Phase-1-provisioned source-database credential. No free sandbox exists;
+every call costs real money, so `demo-databricks-mdp`'s ingestion design
+deliberately minimizes call volume (a handful of fixed markets, no
+per-environment row-limiting the way ACNC/NSW property have, since there's
+no free-tier concept to exploit). CI/CD SP schema-level grants, including
+`CREATE_MATERIALIZED_VIEW` from the start.
+
+## Secret scopes
+
+- **`neon-postgres`**, **`atlas-mongodb`** — Phase 1 source-database
+  connection credentials, provisioned by their own Terraform modules
+  (`modules/neon/`, `modules/atlas/`), threaded into
+  `modules/databricks-secret-scopes/` as module outputs.
+- **`airroi`** (Phase 3h) — this project's **first external credential
+  with no provisioning submodule of its own**. The API key was obtained
+  manually (self-serve signup + $10 credit deposit at
+  `airroi.com/api/developer`, no Terraform-manageable resource exists for
+  this) and set directly as a `sensitive` HCP Terraform workspace
+  variable (`airroi_api_key`) — never passed through a coding session,
+  never in a `.tfvars` file. Threaded into
+  `modules/databricks-secret-scopes/` as a root-level variable, not a
+  module output, since there's no upstream module that produces it.
+
 ## Workspace Git Folders
 
 Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace

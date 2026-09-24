@@ -38,3 +38,15 @@ Secret scopes SHALL be accessible from within the Databricks workspace to notebo
 #### Scenario: Notebook reads a secret
 - **WHEN** a notebook or job with permission on the scope calls `dbutils.secrets.get`
 - **THEN** it retrieves the corresponding secret value from `neon-postgres` or `atlas-mongodb`
+
+### Requirement: AirROI secret scope
+A Databricks secret scope named `airroi` SHALL exist containing the key
+`api_key`, sourced from a `sensitive` Terraform variable set directly in
+the HCP Terraform workspace — the project's first real (non-placeholder)
+third-party API credential, unlike UNGM's documented-but-unprovisioned
+placeholder.
+
+#### Scenario: AirROI scope populated
+- **WHEN** `databricks secrets list-scopes` is run after apply
+- **THEN** `airroi` is listed and `databricks secrets list-secrets airroi`
+  shows it contains `api_key`
