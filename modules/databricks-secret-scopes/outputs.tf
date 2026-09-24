@@ -5,3 +5,7 @@ output "neon_scope_name" {
 output "atlas_scope_name" {
   value = databricks_secret_scope.atlas_mongodb.name
 }
+
+output "airroi_scope_name" {
+  value = databricks_secret_scope.airroi.name
+}

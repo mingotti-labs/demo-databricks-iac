@@ -196,6 +196,18 @@ no free-tier concept to exploit). CI/CD SP schema-level grants, including
   never in a `.tfvars` file. Threaded into
   `modules/databricks-secret-scopes/` as a root-level variable, not a
   module output, since there's no upstream module that produces it.
+  - **This is also the first secret scope needing an explicit CI/CD SP
+    grant** — confirmed via a real `prd` pipeline run failure
+    (`dbutils.secrets.get("airroi", "api_key")` failed with a
+    `SecretManagerClient` error; `databricks secrets list-acls airroi`
+    showed only the human account's `MANAGE`, nothing for the CI/CD SP).
+    `neon-postgres`/`atlas-mongodb` never hit this because their secrets
+    back Terraform-managed UC Connections, never read directly by
+    pipeline code — `dbutils.secrets.get()` is a genuinely different
+    access path from a UC Connection, needing its own grant
+    (`databricks_secret_acl`, `READ`, not the schema-level
+    `databricks_grants` mechanism). See
+    `phase3h-airroi-cicd-secret-grant`'s design.md.
 
 ## Workspace Git Folders
 
