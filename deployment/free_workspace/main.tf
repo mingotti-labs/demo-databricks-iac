@@ -204,3 +204,18 @@ module "secret_scopes" {
 
   airroi_api_key = var.airroi_api_key
 }
+
+# READ added after a real prd pipeline run failure -- a SecretManagerClient
+# error on `dbutils.secrets.get("airroi", "api_key")`, since the scope's only
+# ACL was MANAGE for the human account (Terraform's own creator default).
+# AirROI is the first source whose pipeline code actually calls
+# dbutils.secrets.get() at runtime (neon-postgres/atlas-mongodb's secrets
+# back Terraform-managed UC Connections instead, never read by pipeline code
+# directly) -- so this is the first time a secret scope needed an explicit
+# CI/CD SP grant, same class of gap as CREATE_MATERIALIZED_VIEW (see
+# "CI/CD service principal pipeline execution" in CLAUDE.md).
+resource "databricks_secret_acl" "cicd_airroi_read" {
+  scope      = module.secret_scopes.airroi_scope_name
+  principal  = module.identity_governance.cicd_client_id
+  permission = "READ"
+}
