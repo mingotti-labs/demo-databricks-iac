@@ -9,7 +9,7 @@ Terraform's job, not something created ad hoc from the mdp side.
 
 ## What Changes
 
-- Add `bronze_nsw_property` and `bronze_nsw_property_publish` to
+- Add `bronze_nsw_spatial` and `bronze_nsw_spatial_publish` to
   `local.schemas` in `modules/databricks-unity-catalog/main.tf` — mirrors the
   `bronze_acnc`/`bronze_acnc_publish` pattern exactly, created in all three
   environment catalogs via the module's existing `for_each`
@@ -17,7 +17,7 @@ Terraform's job, not something created ad hoc from the mdp side.
   ArcGIS FeatureServer is public (no auth for the layer being built now),
   and its ingestion pipeline is a Python custom data source reading over
   HTTPS, not a Lakeflow Connect connector or a file-drop source
-- Add `bronze_nsw_property` and `bronze_nsw_property_publish` to
+- Add `bronze_nsw_spatial` and `bronze_nsw_spatial_publish` to
   `local.cicd_writable_schemas` in `deployment/free_workspace/main.tf` —
   applying the `USE_SCHEMA`/`CREATE_TABLE`/`CREATE_MATERIALIZED_VIEW` grant
   established in `phase3b-cicd-pipeline-grants`/`phase3d-cicd-materialized-view-grant`
@@ -27,18 +27,18 @@ Terraform's job, not something created ad hoc from the mdp side.
 
 ### Modified Capabilities
 - `unity-catalog`: the "Bronze and gold schemas per catalog" requirement's
-  schema list gains `bronze_nsw_property` and `bronze_nsw_property_publish`
+  schema list gains `bronze_nsw_spatial` and `bronze_nsw_spatial_publish`
 
 ## Cross-repo dependencies
 
 Provides for an upcoming `demo-databricks-mdp` change (NSW property
 ingestion via a reusable ArcGIS FeatureServer connector, plus SCD1/SCD2
-modeling) that writes into `bronze_nsw_property`/`bronze_nsw_property_publish`.
+modeling) that writes into `bronze_nsw_spatial`/`bronze_nsw_spatial_publish`.
 That change should not deploy until this one has landed.
 
 ## Impact
 
-- Adds 6 schema resources (`bronze_nsw_property` + `bronze_nsw_property_publish`
+- Adds 6 schema resources (`bronze_nsw_spatial` + `bronze_nsw_spatial_publish`
   × 3 environments)
 - Adds 6 more `cicd_schema_use` grant resources (same 2 schemas × 3
   environments)

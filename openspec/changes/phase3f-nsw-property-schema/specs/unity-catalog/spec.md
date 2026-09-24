@@ -4,8 +4,8 @@
 Each catalog SHALL contain the schemas `bronze_neon`, `bronze_neon_publish`,
 `bronze_atlas`, `bronze_atlas_publish`, `bronze_clickstream`,
 `bronze_clickstream_publish`, `bronze_ungm`, `bronze_ungm_publish`,
-`bronze_acnc`, `bronze_acnc_publish`, `bronze_nsw_property`,
-`bronze_nsw_property_publish`, `gold_analytics_gateway`,
+`bronze_acnc`, `bronze_acnc_publish`, `bronze_nsw_spatial`,
+`bronze_nsw_spatial_publish`, `gold_analytics_gateway`,
 `gold_integration_gateway`, and `gold_ai_gateway`. Silver schemas SHALL NOT
 be created in Phase 1, since domains are not yet defined. No
 `bronze_<source>_history` schema SHALL exist — full change history/CDC
