@@ -77,6 +77,7 @@ locals {
     "bronze_clickstream", "bronze_clickstream_publish",
     "bronze_ungm", "bronze_ungm_publish",
     "bronze_acnc", "bronze_acnc_publish",
+    "bronze_nsw_spatial", "bronze_nsw_spatial_publish",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :

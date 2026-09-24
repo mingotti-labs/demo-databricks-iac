@@ -42,6 +42,8 @@ locals {
     bronze_ungm_publish        = "Publish-ready view of UNGM bronze data (incl. SCD1/SCD2 tables)"
     bronze_acnc                = "Raw ACNC Charity Register ingestion landing zone"
     bronze_acnc_publish        = "Publish-ready view of ACNC bronze data (incl. SCD1/SCD2 tables)"
+    bronze_nsw_spatial         = "Raw NSW Spatial Services ingestion landing zone"
+    bronze_nsw_spatial_publish = "Publish-ready view of NSW Spatial Services bronze data (incl. SCD1/SCD2 tables)"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
     gold_ai_gateway            = "AI/ML-facing gold layer"
