@@ -83,3 +83,9 @@ variable "mongodbatlas_private_key" {
   type        = string
   sensitive   = true
 }
+
+variable "airroi_api_key" {
+  description = "AirROI market intelligence API key. Set via HCP Terraform variable set, never in a tfvars file."
+  type        = string
+  sensitive   = true
+}

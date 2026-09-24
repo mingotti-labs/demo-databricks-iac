@@ -27,3 +27,8 @@ variable "atlas_password" {
   type      = string
   sensitive = true
 }
+
+variable "airroi_api_key" {
+  type      = string
+  sensitive = true
+}
