@@ -159,6 +159,18 @@ by an upcoming `demo-databricks-mdp` change (a reusable custom PySpark
 Data Source connector, not a one-off fetch helper like UNGM's). CI/CD SP
 schema-level grants applied proactively, same as UNGM's.
 
+**`bronze_nsw_spatial`/`bronze_nsw_spatial_publish`** (Phase 3f, NSW
+Spatial Services): named after the publishing system (NSW Spatial
+Services), not the specific dataset (its "Property" layer) — matches how
+every other bronze schema names a source system, not a dataset within it.
+Same shape as ACNC's — the Esri ArcGIS REST FeatureServer needs no
+credential, connection, or volume. Consumed by an upcoming
+`demo-databricks-mdp` change (a second reusable custom Spark Data Source
+connector, generic over ArcGIS FeatureServer layers). CI/CD SP
+schema-level grants, **including `CREATE_MATERIALIZED_VIEW` from the
+start** (that gap was discovered reactively for ACNC — see "CI/CD service
+principal pipeline execution" above — applied proactively here instead).
+
 ## Workspace Git Folders
 
 Both this repo and `demo-databricks-mdp` are cloned into the Databricks workspace
