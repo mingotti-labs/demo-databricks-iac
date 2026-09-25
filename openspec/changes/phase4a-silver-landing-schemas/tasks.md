@@ -22,17 +22,18 @@
       grants), 0 to change, 0 to destroy**, across dev/tst/prd — nothing
       outside the 6 new schemas touched. Awaiting explicit go-ahead before
       applying
-- [ ] 3.2 Apply — confirmed via direct queries against the real workspace,
-      not just the apply log
-- [ ] 3.3 `databricks schemas list mdp_dev`/`mdp_tst`/`mdp_prd` confirms all
-      6 new schemas present in all three catalogs
-- [ ] 3.4 `databricks grants get schema mdp_dev.silver_landing_neon` (and
-      one other new schema) confirms the CI/CD SP has `USE_SCHEMA`,
-      `CREATE_TABLE`, and `CREATE_MATERIALIZED_VIEW`
+- [x] 3.2 Applied — `Apply complete! Resources: 36 added, 0 changed, 0
+      destroyed.` Confirmed via direct queries against the real workspace
+      (3.3/3.4), not just the apply log
+- [x] 3.3 `databricks schemas list mdp_dev`/`mdp_tst`/`mdp_prd` confirmed
+      all 6 new schemas present in all three catalogs
+- [x] 3.4 `databricks grants get schema mdp_dev.silver_landing_neon` and
+      `mdp_dev.silver_landing_airroi` confirmed the CI/CD SP
+      (`74cc0004-a114-4e3d-aac2-d714aadb6910`) has `USE_SCHEMA`,
+      `CREATE_TABLE`, and `CREATE_MATERIALIZED_VIEW` on both
 
 ## 4. Documentation
 
-- [ ] 4.1 Add a note to this repo's CLAUDE.md ("Bronze schema shape"
-      section, or a new "Silver schema shape" section): the 6 Silver
-      Landing schemas exist, consumed by `demo-databricks-mdp`'s
-      `phase4a-silver-landing` change
+- [x] 4.1 Added a "Silver schema shape" section to this repo's CLAUDE.md:
+      the 6 Silver Landing schemas exist, consumed by
+      `demo-databricks-mdp`'s `phase4a-silver-landing` change

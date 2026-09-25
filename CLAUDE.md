@@ -181,6 +181,20 @@ per-environment row-limiting the way ACNC/NSW property have, since there's
 no free-tier concept to exploit). CI/CD SP schema-level grants, including
 `CREATE_MATERIALIZED_VIEW` from the start.
 
+## Silver schema shape
+
+`phase4a-silver-landing-schemas` added `silver_landing_neon`,
+`silver_landing_clickstream`, `silver_landing_ungm`, `silver_landing_acnc`,
+`silver_landing_nsw_spatial`, and `silver_landing_airroi` — one schema per
+source, mirroring the bronze schema-per-source pattern rather than the
+domain-based `silver_<domain>` shape NAMING.md still reserves for Domain/
+Marts (still TBD). CI/CD SP grants (`USE_SCHEMA`/`CREATE_TABLE`/
+`CREATE_MATERIALIZED_VIEW`) applied proactively, same as NSW Spatial's and
+AirROI's bronze schemas, since every Silver Landing table is a Materialized
+View. Consumed by `demo-databricks-mdp`'s `phase4a-silver-landing` change.
+No secret scope, connection, or volume needed — these schemas only hold
+tables read from Bronze Publish, already provisioned.
+
 ## Secret scopes
 
 - **`neon-postgres`**, **`atlas-mongodb`** — Phase 1 source-database
