@@ -51,3 +51,7 @@ current baseline. Archive this one before archiving `phase3j-geonames-schema`.
 - Adds 6 more `cicd_schema_use` grant resources (same 2 schemas × 3
   environments)
 - No impact on any existing schema, table, or grant
+
+## Model
+
+Sonnet — repeats the established bronze schema-pair + CI/CD grant pattern.
