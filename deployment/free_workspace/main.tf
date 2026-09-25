@@ -80,6 +80,7 @@ locals {
     "bronze_nsw_spatial", "bronze_nsw_spatial_publish",
     "bronze_airroi", "bronze_airroi_publish",
     "bronze_iso", "bronze_iso_publish",
+    "bronze_geonames", "bronze_geonames_publish",
     "silver_landing_neon", "silver_landing_clickstream",
     "silver_landing_ungm", "silver_landing_acnc",
     "silver_landing_nsw_spatial", "silver_landing_airroi",

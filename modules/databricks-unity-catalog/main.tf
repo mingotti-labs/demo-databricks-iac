@@ -48,6 +48,8 @@ locals {
     bronze_airroi_publish      = "Publish-ready view of AirROI bronze data (incl. SCD2 table)"
     bronze_iso                 = "Raw ISO 3166 country/subdivision reference ingestion landing zone"
     bronze_iso_publish         = "Publish-ready view of ISO 3166 bronze data (incl. SCD1/SCD2 tables)"
+    bronze_geonames            = "Raw GeoNames gazetteer reference ingestion landing zone"
+    bronze_geonames_publish    = "Publish-ready view of GeoNames bronze data (incl. SCD2 tables)"
     silver_landing_neon        = "Source-aligned Silver Landing for Neon (customers, products, orders, order_items)"
     silver_landing_clickstream = "Source-aligned Silver Landing for clickstream (web_events)"
     silver_landing_ungm        = "Source-aligned Silver Landing for UNGM (unspsc_public)"
