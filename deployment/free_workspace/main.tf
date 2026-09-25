@@ -84,6 +84,7 @@ locals {
     "silver_landing_neon", "silver_landing_clickstream",
     "silver_landing_ungm", "silver_landing_acnc",
     "silver_landing_nsw_spatial", "silver_landing_airroi",
+    "silver_landing_iso", "silver_landing_geonames",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :

@@ -56,6 +56,8 @@ locals {
     silver_landing_acnc        = "Source-aligned Silver Landing for ACNC (charity_register)"
     silver_landing_nsw_spatial = "Source-aligned Silver Landing for NSW Spatial Services (property)"
     silver_landing_airroi      = "Source-aligned Silver Landing for AirROI (market_metrics_all, market_summary)"
+    silver_landing_iso         = "Source-aligned Silver Landing for ISO 3166 (country_codes, subdivision_codes)"
+    silver_landing_geonames    = "Source-aligned Silver Landing for GeoNames (country_info, admin1_codes, admin2_codes, cities)"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
     gold_ai_gateway            = "AI/ML-facing gold layer"

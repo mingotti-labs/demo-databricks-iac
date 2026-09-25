@@ -215,6 +215,11 @@ View. Consumed by `demo-databricks-mdp`'s `phase4a-silver-landing` change.
 No secret scope, connection, or volume needed — these schemas only hold
 tables read from Bronze Publish, already provisioned.
 
+`phase4b-silver-landing-iso-geonames-schemas` added `silver_landing_iso`
+and `silver_landing_geonames` — same shape, for the two sources onboarded
+after `phase4a`'s original six. Consumed by an upcoming
+`demo-databricks-mdp` change (`phase4b-silver-landing-iso-geonames`).
+
 ## Secret scopes
 
 - **`neon-postgres`**, **`atlas-mongodb`** — Phase 1 source-database
