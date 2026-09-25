@@ -47,3 +47,7 @@ from the spec.
   3 environments)
 - Adds 6 more `cicd_schema_use` grant resources
 - No impact on any existing schema, table, or grant
+
+## Model
+
+Sonnet — repeats the established bronze schema-pair + CI/CD grant pattern.
