@@ -181,6 +181,17 @@ per-environment row-limiting the way ACNC/NSW property have, since there's
 no free-tier concept to exploit). CI/CD SP schema-level grants, including
 `CREATE_MATERIALIZED_VIEW` from the start.
 
+**`bronze_iso`/`bronze_iso_publish`** (Phase 3i, ISO 3166 country/subdivision
+reference data): same shape as UNGM's — the public, unauthenticated
+`raw.githubusercontent.com` CSV mirror needs no credential, connection, or
+volume, just the schema pair. Consumed by an upcoming `demo-databricks-mdp`
+change (`phase3i-iso-country-reference-ingestion`). CI/CD SP schema-level
+grants applied proactively, including `CREATE_MATERIALIZED_VIEW` from the
+start, same as NSW Spatial's and AirROI's. Sequenced to land **before**
+`phase3j-geonames-schema`, which modifies the same "Bronze and gold schemas
+per catalog" requirement and assumes this one's schema list is already the
+baseline — archive this change first.
+
 ## Silver schema shape
 
 `phase4a-silver-landing-schemas` added `silver_landing_neon`,
