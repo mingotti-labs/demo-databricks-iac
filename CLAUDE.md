@@ -220,6 +220,14 @@ and `silver_landing_geonames` — same shape, for the two sources onboarded
 after `phase4a`'s original six. Consumed by an upcoming
 `demo-databricks-mdp` change (`phase4b-silver-landing-iso-geonames`).
 
+`phase4d-silver-normalised-airroi-schema` added `silver_normalised_airroi`,
+the first Silver Normalised schema (`silver_normalised_<source>`, one per
+source, added just in time when that source is normalised). Same grants as
+Silver Landing. No `APPLY TAG` grant: `demo-databricks-mdp`'s tag step
+(`ALTER MATERIALIZED VIEW … SET TAGS`) runs as the tables' owner, which is
+enough, confirmed in `dev`. Consumed by `demo-databricks-mdp`'s
+`phase4d-silver-normalised-framework`.
+
 ## Secret scopes
 
 - **`neon-postgres`**, **`atlas-mongodb`** — Phase 1 source-database
