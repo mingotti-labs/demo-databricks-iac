@@ -59,6 +59,7 @@ locals {
     silver_landing_iso         = "Source-aligned Silver Landing for ISO 3166 (country_codes, subdivision_codes)"
     silver_landing_geonames    = "Source-aligned Silver Landing for GeoNames (country_info, admin1_codes, admin2_codes, cities)"
     silver_normalised_airroi   = "Source-aligned Silver Normalised for AirROI (3NF + extracted entities)"
+    silver_normalised_acnc     = "Source-aligned Silver Normalised for ACNC (3NF + extracted entities, bridges)"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
     gold_ai_gateway            = "AI/ML-facing gold layer"
