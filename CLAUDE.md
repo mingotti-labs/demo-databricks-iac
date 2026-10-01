@@ -228,6 +228,13 @@ Silver Landing. No `APPLY TAG` grant: `demo-databricks-mdp`'s tag step
 enough, confirmed in `dev`. Consumed by `demo-databricks-mdp`'s
 `phase4d-silver-normalised-framework`.
 
+`phase4e-silver-normalised-acnc-schema` added `silver_normalised_acnc` —
+same shape, same grants. `APPLY TAG` not granted up front here either,
+pending confirmation from acnc's own tag-step run (same mechanism as
+airroi's, so expected to be unnecessary, not yet re-verified at the time
+of writing). Consumed by `demo-databricks-mdp`'s
+`phase4e-silver-normalised-acnc`.
+
 ## Secret scopes
 
 - **`neon-postgres`**, **`atlas-mongodb`** — Phase 1 source-database
