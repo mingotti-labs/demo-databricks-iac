@@ -17,11 +17,16 @@ global ~/.claude/CLAUDE.md.
 - `modules/`: shared, single-instance Terraform modules (one bucket per call, one
   catalog per call, etc.) — multiplicity is composed at the root, not inside a module.
 - `deployment/free_workspace/`: the one real deployment root today (Free Edition:
-  single workspace, serverless-only, no account-level API).
-- `deployment/single_workspace/`, `deployment/multiple_workspaces/`: reserved,
-  empty (`.gitkeep` only) placeholders for future deployment shapes (a future paid
-  single workspace, and the corporate multi-workspace pattern respectively) — do not
-  build these out until there's a real need.
+  single workspace, serverless-only, no account-level API). Environments are
+  `dev` and `prd` only: a metastore is capped at 500 tables and each environment
+  multiplies every table.
+- `deployment/single_workspace/`: an **unapplied reference copy** of the same
+  composition with all three environments (`dev`, `tst`, `prd`), for a future paid
+  single workspace. No `cloud` block, so it cannot touch `free_workspace`'s state.
+  Its Free Edition workarounds are probably wrong for a paid edition.
+- `deployment/multiple_workspaces/`: reserved, empty (`.gitkeep` only) placeholder
+  for the corporate multi-workspace pattern — do not build it out until there's a
+  real need.
 
 ## Naming conventions
 
@@ -286,7 +291,7 @@ the decision record behind what's built.
 `environment` and `uc_external_ids` have no persisted value in the HCP
 Terraform workspace — they must be passed explicitly on every local
 `plan`/`apply` (`-var="environment=dev" -var='uc_external_ids={"dev":"...",
-"tst":"...","prd":"..."}'`, current values via `terraform output -json
+"prd":"..."}'`, current values via `terraform output -json
 uc_external_ids`). Omitting `uc_external_ids` doesn't just no-op — it plans to
 *strip* the `sts:ExternalId` condition from each environment's IAM trust
 policy (reverting to the variable's empty default), a real security downgrade

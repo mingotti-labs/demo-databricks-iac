@@ -10,7 +10,7 @@ mongodbatlas_org_id = "6aa49e0b17258aa1f5264490"
 neon_org_id         = "org-xxxxxxxx-xxxxxxxx"
 
 # environments: catalog + bucket name per environment. The default in variables.tf already
-# matches this project (hoe-mdp-dev/tst/prd, mdp_dev/tst/prd) — override here only if needed.
+# matches this project (hoe-mdp-dev/prd, mdp_dev/prd) — override here only if needed.
 
 # uc_external_ids: leave empty ({}) on first apply. After first apply, set from
 # `terraform output uc_external_ids` and re-apply to harden each environment's IAM trust policy.
