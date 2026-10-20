@@ -12,6 +12,15 @@ is already the whole "which environments" decision.
   (`single_workspace/`, reserved). The map's default in that root is the right
   place. A `config.json` plus edition folders (as in `demo-databricks-mdp`)
   would add machinery Terraform does not need.
+- **Keep the three-environment version as `single_workspace`.** It is the
+  generic shape; `free_workspace` is that shape plus Free workarounds. The
+  copy is a reference only: never applied, so not claimed to work on a paid
+  edition. The cost is two near-identical `main.tf` files that can drift; only
+  `free_workspace` is applied, so that is accepted for now.
+- **The copy must not share state.** `terraform.tf` binds `free_workspace` to
+  the HCP workspace `demo-databricks-iac`. The copy drops the `cloud` block
+  (local backend if ever initialised), so nothing there can touch live state.
+  This repo has no CI, so nothing runs Terraform there automatically.
 - **No `force_destroy` flags in modules.** Adding them would make every
   environment, including `prd`, easier to destroy by accident, for a one-off
   need. Preparation is manual and approved instead.

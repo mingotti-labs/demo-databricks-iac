@@ -1,5 +1,9 @@
+## 0. Reference copy
+- [ ] 0.1 Copy `deployment/free_workspace/` to `deployment/single_workspace/` (without `.terraform/`, lock state, or any tfvars); remove the `cloud` block from its `terraform.tf`; add a short README saying it is an unapplied reference with Free workarounds
+- [ ] 0.2 `terraform init -backend=false` and `terraform validate` in the copy; confirm no backend or state was created
+
 ## 1. Change
-- [ ] 1.1 In `deployment/free_workspace/variables.tf`, drop `tst` from the `environments` default; update the variable description and `dev.tfvars.example` comment (`hoe-mdp-dev/prd`, `mdp_dev/prd`)
+- [ ] 1.1 In the trimmed `free_workspace`, `deployment/free_workspace/variables.tf`, drop `tst` from the `environments` default; update the variable description and `dev.tfvars.example` comment (`hoe-mdp-dev/prd`, `mdp_dev/prd`)
 - [ ] 1.2 Update CLAUDE.md, NAMING.md and README.md mentions of `tst`/three environments for the free workspace
 - [ ] 1.3 `terraform fmt` and `terraform validate`
 
