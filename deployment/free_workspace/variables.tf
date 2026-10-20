@@ -16,7 +16,6 @@ variable "environments" {
   }))
   default = {
     dev = { catalog_name = "mdp_dev", bucket_name = "hoe-mdp-dev" }
-    tst = { catalog_name = "mdp_tst", bucket_name = "hoe-mdp-tst" }
     prd = { catalog_name = "mdp_prd", bucket_name = "hoe-mdp-prd" }
   }
 }

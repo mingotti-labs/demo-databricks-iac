@@ -2,9 +2,10 @@
 
 ## Cloud resources
 
-- S3 buckets: `hoe-mdp-<env>` (`hoe-mdp-dev`, `hoe-mdp-tst`, `hoe-mdp-prd`) — one
-  per environment catalog.
-- Unity Catalog catalogs: `mdp_<env>` (`mdp_dev`, `mdp_tst`, `mdp_prd`).
+- S3 buckets: `hoe-mdp-<env>` (`hoe-mdp-dev`, `hoe-mdp-prd`; `hoe-mdp-tst` in the
+  three-environment reference) — one per environment catalog.
+- Unity Catalog catalogs: `mdp_<env>` (`mdp_dev`, `mdp_prd`; `mdp_tst` in the
+  three-environment reference).
 
 ## Identity & groups
 
