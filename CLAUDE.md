@@ -240,6 +240,19 @@ airroi's, so expected to be unnecessary, not yet re-verified at the time
 of writing). Consumed by `demo-databricks-mdp`'s
 `phase4e-silver-normalised-acnc`.
 
+## Pattern schemas
+
+`modules/databricks-uc-pattern-schemas/` creates `pattern_bronze` and
+`pattern_bronze_publish` in the **`dev` catalog only** (instantiated once
+against `module.unity_catalog["dev"]`, not per environment). They hold the
+output of pattern-only implementations from `demo-databricks-mdp`'s
+`references/patterns` bundle, so that output is never mistaken for live source
+data. Another layer is one entry in the module's schema map, added when a
+pattern needs it. No CI/CD service principal grants yet: that bundle is
+deployed by hand in dev; add the usual schema grants when CI deploys it.
+Tables created in these schemas still count toward the 500-table metastore
+quota.
+
 ## Secret scopes
 
 - **`neon-postgres`**, **`atlas-mongodb`** — Phase 1 source-database
