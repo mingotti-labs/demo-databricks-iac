@@ -39,3 +39,9 @@ of each — this file covers naming only.
   schema per source system). Volume storage reuses the environment's existing
   bucket (the same one backing the catalog's `storage_root`/external location)
   — no new bucket, storage credential, or external location per source system.
+
+## Pattern schemas
+
+- `pattern_<layer>` (`pattern_bronze`, `pattern_bronze_publish`, ...) in the dev
+  catalog only: output of pattern-only implementations. `<layer>` is a schema
+  family from the design-pattern register. Never created in `tst`/`prd`.

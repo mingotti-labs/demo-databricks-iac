@@ -156,6 +156,15 @@ resource "databricks_grants" "cicd_neon_dev_connection_use" {
   }
 }
 
+# Dev only, on purpose: output of pattern-only implementations
+# (demo-databricks-mdp's references/patterns bundle). Not for_each over
+# environments, so adding an environment never adds these schemas.
+module "pattern_schemas" {
+  source = "../../modules/databricks-uc-pattern-schemas"
+
+  catalog_name = module.unity_catalog["dev"].catalog_name
+}
+
 module "clickstream_volume" {
   source   = "../../modules/databricks-uc-volume"
   for_each = var.environments
