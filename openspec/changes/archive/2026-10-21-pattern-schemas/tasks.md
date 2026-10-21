@@ -10,6 +10,6 @@
 - [x] 3.1 NAMING.md: `pattern_<layer>` schema rule (dev only); CLAUDE.md: a short "Pattern schemas" section
 
 ## 4. Plan and apply
-- [ ] 4.1 Local `terraform plan` (`environment=dev`, full `uc_external_ids` for `dev` and `prd`): expect 2 to add, 0 to change, 0 to destroy
-- [ ] 4.2 After the PR merges and with explicit approval, apply the reviewed plan
-- [ ] 4.3 Verify: `databricks schemas list mdp_dev` shows both schemas; `mdp_prd` shows none
+- [x] 4.1 Local `terraform plan` (`environment=dev`, full `uc_external_ids` for `dev` and `prd`): expect 2 to add, 0 to change, 0 to destroy
+- [x] 4.2 After the PR merges and with explicit approval, apply the reviewed plan
+- [x] 4.3 Verify: `databricks schemas list mdp_dev` shows both schemas; `mdp_prd` shows none
