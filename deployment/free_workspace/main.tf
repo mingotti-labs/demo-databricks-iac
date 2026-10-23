@@ -235,3 +235,11 @@ resource "databricks_secret_acl" "cicd_airroi_read" {
   principal  = module.identity_governance.cicd_client_id
   permission = "READ"
 }
+
+# The neon verification reads the scope's credentials as the CI/CD principal,
+# the same gap as the airroi grant above.
+resource "databricks_secret_acl" "cicd_neon_read" {
+  scope      = module.secret_scopes.neon_scope_name
+  principal  = module.identity_governance.cicd_client_id
+  permission = "READ"
+}
