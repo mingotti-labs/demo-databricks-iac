@@ -1,6 +1,6 @@
 ## 1. Terraform
-- [ ] 1.1 Add `databricks_secret_acl.cicd_neon_read` (READ for the CI/CD principal on the neon scope) next to the airroi one in `free_workspace` and `single_workspace`
-- [ ] 1.2 `terraform plan` reviewed in full: one added resource, nothing else
+- [x] 1.1 Add `databricks_secret_acl.cicd_neon_read` (READ for the CI/CD principal on the neon scope) next to the airroi one in `free_workspace` and `single_workspace`
+- [x] 1.2 `terraform plan` reviewed in full: one added resource, nothing else
 - [ ] 1.3 Apply with the user's explicit go-ahead (user present)
 
 ## 2. Verify
