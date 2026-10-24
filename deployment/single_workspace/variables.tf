@@ -89,3 +89,15 @@ variable "airroi_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "fmp_api_key" {
+  description = "Financial Modeling Prep API key. Set as a sensitive HCP Terraform workspace variable, never in a tfvars file."
+  type        = string
+  sensitive   = true
+}
+
+variable "fred_api_key" {
+  description = "FRED API key. Set as a sensitive HCP Terraform workspace variable, never in a tfvars file."
+  type        = string
+  sensitive   = true
+}

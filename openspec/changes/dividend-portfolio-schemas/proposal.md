@@ -52,7 +52,7 @@ the clickstream volume pattern.
 ## Impact
 
 - `terraform plan` on `free_workspace` (the only applied deployment;
-  `single_workspace` is an unapplied reference copy) should show about 112
+  `single_workspace` is an unapplied reference copy) should show 110
   additions:
   50 schemas and 50 grants (25 × 2 catalogs), 2 scopes, 2 secrets, 2 ACLs,
   2 volumes, 2 volume grants, and nothing changed or destroyed.

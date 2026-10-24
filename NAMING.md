@@ -32,8 +32,12 @@ of each — this file covers naming only.
 
 ## UC Volumes
 
-- `<service>_<source-system>_raw` — e.g. `s3_clickstream_raw`. One volume per
-  source system, living inside that source's own `bronze_<source>` schema — not
+- `<service>_raw` — e.g. `s3_raw`. One volume per
+  source system, living inside that source's own `bronze_<source>` schema, which
+  already names the source (volume names only need to be unique within a schema,
+  so `mdp_dev.bronze_portfolio.s3_raw` and another source's `s3_raw` never clash).
+  The one exception is `s3_clickstream_raw`, kept so the volume is not recreated
+  (a rename could lose its files). Volumes are not
   shared across source systems, so UC volume-level grants (`READ VOLUME` /
   `WRITE VOLUME`) stay scoped to one source at a time (same reasoning as one
   schema per source system). Volume storage reuses the environment's existing
