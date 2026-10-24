@@ -280,6 +280,10 @@ quota.
     (`databricks_secret_acl`, `READ`, not the schema-level
     `databricks_grants` mechanism). See
     `phase3h-airroi-cicd-secret-grant`'s design.md.
+  - **`neon-postgres` later needed the same grant**
+    (`databricks_secret_acl.cicd_neon_read`, `grant-cicd-read-neon-secrets`):
+    the neon seed-data and source-versus-bronze checks in `demo-databricks-mdp`
+    read the scope with `dbutils.secrets.get()` as the CI/CD SP.
 
 ## Workspace Git Folders
 
