@@ -27,8 +27,8 @@
 
 - [x] 4.1 User sets `fmp_api_key` and `fred_api_key` in HCP Terraform
 - [x] 4.2 `terraform plan`: additions only, counts match proposal.md
-- [ ] 4.3 Apply with the user's go-ahead
-- [ ] 4.4 Run the checks in design.md's Migration Plan
+- [x] 4.3 Apply with the user's go-ahead
+- [x] 4.4 Run the checks in design.md's Migration Plan
 
 ## 5. Documentation
 
