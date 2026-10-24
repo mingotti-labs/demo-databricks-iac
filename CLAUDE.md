@@ -135,6 +135,11 @@ Naming: see NAMING.md.
   `USE_CATALOG` grant) was left unverified here — see
   `phase3b-clickstream-volume`'s design.md.
 
+- **`s3_raw`** in `bronze_portfolio` (`modules/databricks-uc-volume/`): one
+  `MANAGED` volume per environment for the user's purchases CSV (dividend
+  portfolio story). Both the CI/CD service principal and the human account hold
+  `READ_VOLUME`/`WRITE_VOLUME`: the human uploads the file.
+
 ## Bronze schema shape
 
 Each source system gets exactly two bronze-family schemas: `bronze_<source>`
@@ -240,6 +245,12 @@ airroi's, so expected to be unnecessary, not yet re-verified at the time
 of writing). Consumed by `demo-databricks-mdp`'s
 `phase4e-silver-normalised-acnc`.
 
+`dividend-portfolio-schemas` added, for the dividend portfolio story,
+`bronze_<s>`, `bronze_<s>_publish` and `silver_landing_<s>` for `fmp`,
+`wikipedia`, `sec`, `yahoo`, `rba`, `fred`, `portfolio` and `reference`, plus
+`silver_investments`, the first Silver Domain schema. Same CI/CD grants. No
+`silver_normalised_<s>` schemas yet: each source decides that later.
+
 ## Pattern schemas
 
 `modules/databricks-uc-pattern-schemas/` creates `pattern_bronze` and
@@ -284,6 +295,13 @@ quota.
     (`databricks_secret_acl.cicd_neon_read`, `grant-cicd-read-neon-secrets`):
     the neon seed-data and source-versus-bronze checks in `demo-databricks-mdp`
     read the scope with `dbutils.secrets.get()` as the CI/CD SP.
+
+- **`fmp`**, **`fred`** (`dividend-portfolio-schemas`) — Financial Modeling Prep
+  and FRED API keys (`api_key` each) for the dividend portfolio story
+  (`demo-databricks-planning`'s `2026-10-24-dividend-portfolio-story-design.md`).
+  Same mechanism as `airroi`: sensitive HCP Terraform workspace variables
+  (`fmp_api_key`, `fred_api_key`), threaded in as root variables, with a `READ`
+  grant for the CI/CD SP from the start since pipeline code reads both.
 
 ## Workspace Git Folders
 

@@ -57,7 +57,7 @@ uploading their purchases CSV, so the human account gets `READ_VOLUME` and
 
 - [The user has no FRED key yet] → Mitigation: the plan fails on a missing
   variable; the user gets a free key from FRED before the plan.
-- [Large plan, ~112 additions] → Mitigation: all additive, reviewed in full
+- [Large plan, 110 additions] → Mitigation: all additive, reviewed in full
   before apply; counts per type listed in proposal.md to check against.
 
 ## Migration Plan

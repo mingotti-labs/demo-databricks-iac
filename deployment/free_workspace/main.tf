@@ -86,6 +86,15 @@ locals {
     "silver_landing_nsw_spatial", "silver_landing_airroi",
     "silver_landing_iso", "silver_landing_geonames",
     "silver_normalised_airroi", "silver_normalised_acnc",
+    "bronze_fmp", "bronze_fmp_publish", "silver_landing_fmp",
+    "bronze_wikipedia", "bronze_wikipedia_publish", "silver_landing_wikipedia",
+    "bronze_sec", "bronze_sec_publish", "silver_landing_sec",
+    "bronze_yahoo", "bronze_yahoo_publish", "silver_landing_yahoo",
+    "bronze_rba", "bronze_rba_publish", "silver_landing_rba",
+    "bronze_fred", "bronze_fred_publish", "silver_landing_fred",
+    "bronze_portfolio", "bronze_portfolio_publish", "silver_landing_portfolio",
+    "bronze_reference", "bronze_reference_publish", "silver_landing_reference",
+    "silver_investments",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :
@@ -192,6 +201,34 @@ resource "databricks_grants" "cicd_clickstream_volume_use" {
   }
 }
 
+module "portfolio_volume" {
+  source   = "../../modules/databricks-uc-volume"
+  for_each = var.environments
+
+  catalog_name = module.unity_catalog[each.key].catalog_name
+  schema_name  = "bronze_portfolio"
+  volume_name  = "s3_raw"
+
+  depends_on = [module.unity_catalog]
+}
+
+# The human account uploads the purchases CSV, so it needs the volume grants
+# too, unlike clickstream's volume (written only by a generator job).
+resource "databricks_grants" "portfolio_volume_use" {
+  for_each = var.environments
+  volume   = "${module.unity_catalog[each.key].catalog_name}.bronze_portfolio.${module.portfolio_volume[each.key].volume_name}"
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
+
+  grant {
+    principal  = var.human_account_username
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
+}
+
 module "git_repo_iac" {
   source = "../../modules/databricks-git-repo"
 
@@ -219,6 +256,8 @@ module "secret_scopes" {
   atlas_password          = module.atlas.password
 
   airroi_api_key = var.airroi_api_key
+  fmp_api_key    = var.fmp_api_key
+  fred_api_key   = var.fred_api_key
 }
 
 # READ added after a real prd pipeline run failure -- a SecretManagerClient
@@ -240,6 +279,18 @@ resource "databricks_secret_acl" "cicd_airroi_read" {
 # the same gap as the airroi grant above.
 resource "databricks_secret_acl" "cicd_neon_read" {
   scope      = module.secret_scopes.neon_scope_name
+  principal  = module.identity_governance.cicd_client_id
+  permission = "READ"
+}
+
+resource "databricks_secret_acl" "cicd_fmp_read" {
+  scope      = module.secret_scopes.fmp_scope_name
+  principal  = module.identity_governance.cicd_client_id
+  permission = "READ"
+}
+
+resource "databricks_secret_acl" "cicd_fred_read" {
+  scope      = module.secret_scopes.fred_scope_name
   principal  = module.identity_governance.cicd_client_id
   permission = "READ"
 }
