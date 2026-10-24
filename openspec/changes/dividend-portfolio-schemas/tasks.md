@@ -18,7 +18,7 @@
 
 ## 3. Volume
 
-- [ ] 3.1 Add a `portfolio_volume` module call (`s3_portfolio_raw` in
+- [ ] 3.1 Add a `portfolio_volume` module call (`s3_raw` in
       `bronze_portfolio`, per environment) and a `databricks_grants` giving
       `READ_VOLUME`/`WRITE_VOLUME` to the CI/CD service principal and the human
       account, in both deployments
@@ -34,3 +34,6 @@
 
 - [ ] 5.1 CLAUDE.md: note the new schemas, scopes and volume and the story they
       serve
+- [ ] 5.2 NAMING.md "UC Volumes": rule becomes `<service>_raw` (the schema
+      already names the source); `s3_clickstream_raw` listed as the one
+      exception, kept to avoid recreating the volume

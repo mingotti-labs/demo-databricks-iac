@@ -23,7 +23,7 @@ secret scope.
 - **Secret scopes** `fmp` and `fred`, each with one key `api_key`, from new
   sensitive variables `fmp_api_key` and `fred_api_key` set directly in HCP
   Terraform, each with `READ` for the CI/CD service principal.
-- **Volume** `s3_portfolio_raw` in `bronze_portfolio` per catalog (the user's
+- **Volume** `s3_raw` in `bronze_portfolio` per catalog (the user's
   purchases CSV), with `READ_VOLUME`/`WRITE_VOLUME` for the CI/CD service
   principal and for the human account (who uploads the file).
 - Not included: `silver_normalised_<s>` schemas (decided per source later),

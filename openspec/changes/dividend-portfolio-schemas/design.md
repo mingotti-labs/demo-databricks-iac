@@ -41,8 +41,14 @@ root variable threaded through the module. Both are read at runtime by
 pipeline code, so both get `READ` for the CI/CD service principal from the
 start (the airroi and neon gaps were found only after failures).
 
-**Volume `s3_portfolio_raw`, human account can write.**
-Name follows the iac NAMING `<service>_<source-system>_raw`. Unlike
+**Volume `s3_raw`, human account can write.**
+New naming rule `<service>_raw` (decided by the user): the volume lives in
+`bronze_<source>`, so its full name `catalog.bronze_<source>.s3_raw` already
+names the source, and volume names only need to be unique within a schema,
+so two sources' `s3_raw` volumes never clash. Clickstream's
+`s3_clickstream_raw` keeps its name as a recorded exception: renaming it
+could recreate the volume and lose its files, which is not worth checking
+for a name. Unlike
 clickstream (written by a generator job), this volume is written by a person
 uploading their purchases CSV, so the human account gets `READ_VOLUME` and
 `WRITE_VOLUME` alongside the CI/CD service principal.
@@ -60,6 +66,6 @@ Additive only. Apply, then check: `databricks schemas list mdp_dev` and
 `mdp_prd` show the 25 new schemas; `databricks secrets list-scopes` shows `fmp`
 and `fred`, each holding `api_key`; `databricks secrets list-acls fmp|fred`
 lists the CI/CD service principal with `READ`; `databricks volumes list
-mdp_dev bronze_portfolio` shows `s3_portfolio_raw`; `databricks grants get
+mdp_dev bronze_portfolio` shows `s3_raw`; `databricks grants get
 schema mdp_dev.silver_investments` shows the CI/CD grants. Rollback: destroy
 the new resources; nothing consumes them yet.
