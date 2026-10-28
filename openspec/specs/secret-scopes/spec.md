@@ -69,7 +69,7 @@ Terraform-managed UC Connection.
 The CI/CD service principal SHALL hold `READ` on every secret scope that
 pipeline, job or notebook code reads with `dbutils.secrets.get()` at runtime. A
 scope that only backs a Terraform-managed UC Connection does not need the grant.
-Today these are `airroi`, `neon-postgres`, `fmp` and `fred`.
+Today these are `airroi`, `neon-postgres` and `fred`.
 
 #### Scenario: Neon scope readable by the principal
 - **WHEN** `databricks secrets list-acls neon-postgres` is run after apply
@@ -81,19 +81,10 @@ Today these are `airroi`, `neon-postgres`, `fmp` and `fred`.
 - **THEN** it returns the secret instead of failing with `PERMISSION_DENIED`
 
 #### Scenario: FMP and FRED scopes readable by the principal
-- **WHEN** `databricks secrets list-acls fmp` and `databricks secrets list-acls fred`
-  are run after apply
-- **THEN** the CI/CD service principal is listed with `READ` on both
-
-### Requirement: FMP secret scope
-A Databricks secret scope named `fmp` SHALL exist containing the key
-`api_key`, the user's Financial Modeling Prep key, sourced from the
-`sensitive` Terraform variable `fmp_api_key` set directly in the HCP Terraform
-workspace and never committed.
-
-#### Scenario: FMP scope populated
-- **WHEN** `databricks secrets list-secrets fmp` is run after apply
-- **THEN** it lists `api_key` (value not displayed)
+- **WHEN** `databricks secrets list-acls fred` is run after apply
+- **THEN** the CI/CD service principal is listed with `READ`, and
+  `databricks secrets list-scopes` shows no `fmp` scope (removed after the
+  FMP probe; the scenario keeps its name so the archive replaces it)
 
 ### Requirement: FRED secret scope
 A Databricks secret scope named `fred` SHALL exist containing the key
