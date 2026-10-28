@@ -140,6 +140,12 @@ Naming: see NAMING.md.
   portfolio story). Both the CI/CD service principal and the human account hold
   `READ_VOLUME`/`WRITE_VOLUME`: the human uploads the file.
 
+- **`s3_raw`** in `bronze_sec`, `bronze_yahoo` and `bronze_wikipedia`
+  (`raw-volumes-sec-yahoo-wikipedia`): same shape and grants as the portfolio
+  volume. Each holds that source's dated raw files, written by a fetch task and
+  read by Auto Loader into append-only raw tables (the dividend story's
+  replayable raw). Consumed by `sec-company-facts` in `demo-databricks-mdp`.
+
 ## Bronze schema shape
 
 Each source system gets exactly two bronze-family schemas: `bronze_<source>`
@@ -250,6 +256,9 @@ of writing). Consumed by `demo-databricks-mdp`'s
 `wikipedia`, `sec`, `yahoo`, `rba`, `fred`, `portfolio` and `reference`, plus
 `silver_investments`, the first Silver Domain schema. Same CI/CD grants. No
 `silver_normalised_<s>` schemas yet: each source decides that later.
+`raw-volumes-sec-yahoo-wikipedia` then removed the `fmp` and `reference` schemas
+(empty, never used: FMP was dropped after its probe and the reference settings
+live in `portfolio`).
 
 ## Pattern schemas
 
@@ -296,12 +305,14 @@ quota.
     the neon seed-data and source-versus-bronze checks in `demo-databricks-mdp`
     read the scope with `dbutils.secrets.get()` as the CI/CD SP.
 
-- **`fmp`**, **`fred`** (`dividend-portfolio-schemas`) — Financial Modeling Prep
-  and FRED API keys (`api_key` each) for the dividend portfolio story
-  (`demo-databricks-planning`'s `2026-10-24-dividend-portfolio-story-design.md`).
-  Same mechanism as `airroi`: sensitive HCP Terraform workspace variables
-  (`fmp_api_key`, `fred_api_key`), threaded in as root variables, with a `READ`
-  grant for the CI/CD SP from the start since pipeline code reads both.
+- **`fred`** (`dividend-portfolio-schemas`) — FRED API key (`api_key`) for the
+  dividend portfolio story (`demo-databricks-planning`'s
+  `2026-10-24-dividend-portfolio-story-design.md`). Same mechanism as `airroi`: a
+  sensitive HCP Terraform workspace variable (`fred_api_key`), threaded in as a
+  root variable, with a `READ` grant for the CI/CD SP from the start since
+  pipeline code reads it. An `fmp` scope (Financial Modeling Prep) was created
+  alongside it and removed by `raw-volumes-sec-yahoo-wikipedia`: the probe showed
+  FMP's free plan refuses the S&P 500 list.
 
 ## Workspace Git Folders
 

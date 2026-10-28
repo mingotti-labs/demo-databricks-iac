@@ -33,11 +33,6 @@ variable "airroi_api_key" {
   sensitive = true
 }
 
-variable "fmp_api_key" {
-  type      = string
-  sensitive = true
-}
-
 variable "fred_api_key" {
   type      = string
   sensitive = true

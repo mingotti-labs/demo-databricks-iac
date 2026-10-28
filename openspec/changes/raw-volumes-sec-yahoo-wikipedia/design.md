@@ -59,3 +59,16 @@ identical today and stay so.
 5. The user deletes `fmp_api_key` from the HCP Terraform workspace.
 Rollback: revert the commit and apply; the schemas and scope come back empty
 (the FMP key would need setting again).
+
+## Results (2026-10-28)
+
+- The six schemas held no tables in dev and prd before the plan.
+- `terraform plan`: 12 to add, 0 to change, 27 to destroy, as expected; no
+  update or replacement. Applied with the user's go-ahead.
+- `s3_raw` is listed in `bronze_sec`, `bronze_yahoo` and `bronze_wikipedia` in
+  both catalogs; the CI/CD service principal and the human account hold
+  `READ_VOLUME` and `WRITE_VOLUME` on each.
+- No `fmp` or `reference` schema remains; `databricks secrets list-scopes` shows
+  `airroi`, `atlas-mongodb`, `fred` and `neon-postgres`.
+- Left for the user: delete `fmp_api_key` from the HCP Terraform workspace
+  (task 3.5).
