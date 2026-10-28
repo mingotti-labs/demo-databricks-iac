@@ -10,10 +10,6 @@ output "airroi_scope_name" {
   value = databricks_secret_scope.airroi.name
 }
 
-output "fmp_scope_name" {
-  value = databricks_secret_scope.fmp.name
-}
-
 output "fred_scope_name" {
   value = databricks_secret_scope.fred.name
 }

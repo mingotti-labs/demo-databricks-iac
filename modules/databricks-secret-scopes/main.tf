@@ -67,16 +67,6 @@ resource "databricks_secret" "airroi_api_key" {
   string_value = var.airroi_api_key
 }
 
-resource "databricks_secret_scope" "fmp" {
-  name = "fmp"
-}
-
-resource "databricks_secret" "fmp_api_key" {
-  scope        = databricks_secret_scope.fmp.id
-  key          = "api_key"
-  string_value = var.fmp_api_key
-}
-
 resource "databricks_secret_scope" "fred" {
   name = "fred"
 }
