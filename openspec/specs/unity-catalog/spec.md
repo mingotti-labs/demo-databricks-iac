@@ -55,11 +55,9 @@ SHALL exist — full change history/CDC replay, where needed, is modeled as
 
 The `free_workspace` deployment differs, to stay under Free Edition's
 50-schemas-per-catalog quota: its catalogs SHALL NOT contain `bronze_atlas`,
-`bronze_atlas_publish`, `silver_landing_rba` or `silver_landing_fred`, and
-SHALL contain one `silver_landing` schema for every source's Silver Landing
-tables, each named `<source>__<entity>`. The other `silver_landing_<source>`
-schemas remain in `free_workspace` until `demo-databricks-mdp` has moved their
-tables into `silver_landing`. `single_workspace` keeps the list above.
+`bronze_atlas_publish` or any `silver_landing_<source>` schema, and SHALL
+contain one `silver_landing` schema for every source's Silver Landing tables,
+each named `<source>__<entity>`. `single_workspace` keeps the list above.
 
 #### Scenario: All nine schemas present per catalog
 - **WHEN** `databricks schemas list <catalog>` is run for each environment
@@ -73,8 +71,7 @@ tables into `silver_landing`. `single_workspace` keeps the list above.
 - **WHEN** `databricks schemas list mdp_dev` and `databricks schemas list
   mdp_prd` are run after apply
 - **THEN** `silver_landing` is listed, and `bronze_atlas`,
-  `bronze_atlas_publish`, `silver_landing_rba` and `silver_landing_fred` are
-  not
+  `bronze_atlas_publish` and every `silver_landing_<source>` schema are not
 
 #### Scenario: Free workspace catalogs are under the schema quota
 - **WHEN** `databricks resource-quotas get-quota catalog <catalog>
