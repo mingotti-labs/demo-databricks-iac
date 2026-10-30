@@ -53,17 +53,37 @@ domain; `silver_investments` is the first. No `bronze_<source>_history` schema
 SHALL exist — full change history/CDC replay, where needed, is modeled as
 `<table>_scd2` inside the source's `_publish` schema instead.
 
+The `free_workspace` deployment differs, to stay under Free Edition's
+50-schemas-per-catalog quota: its catalogs SHALL NOT contain `bronze_atlas`,
+`bronze_atlas_publish`, `silver_landing_rba` or `silver_landing_fred`, and
+SHALL contain one `silver_landing` schema for every source's Silver Landing
+tables, each named `<source>__<entity>`. The other `silver_landing_<source>`
+schemas remain in `free_workspace` until `demo-databricks-mdp` has moved their
+tables into `silver_landing`. `single_workspace` keeps the list above.
+
 #### Scenario: All nine schemas present per catalog
 - **WHEN** `databricks schemas list <catalog>` is run for each environment
-  catalog
+  catalog of `single_workspace`
 - **THEN** all fifty schemas listed above are present in each catalog, no
   `fmp` or `reference` schema is present, no Silver Domain schema other than
   `silver_investments` is present, and no `bronze_<source>_history` schema is
   present
 
+#### Scenario: Free workspace has one Silver Landing schema for new sources
+- **WHEN** `databricks schemas list mdp_dev` and `databricks schemas list
+  mdp_prd` are run after apply
+- **THEN** `silver_landing` is listed, and `bronze_atlas`,
+  `bronze_atlas_publish`, `silver_landing_rba` and `silver_landing_fred` are
+  not
+
+#### Scenario: Free workspace catalogs are under the schema quota
+- **WHEN** `databricks resource-quotas get-quota catalog <catalog>
+  schema-quota` is run for `mdp_dev` and `mdp_prd`
+- **THEN** `quota_count` is below `quota_limit` (50) for both
+
 #### Scenario: CI/CD principal can build tables in the story's schemas
 - **WHEN** `databricks grants get schema <catalog>.silver_investments` (or any
-  of the story's new schemas) is run
+  of the story's new schemas, or `silver_landing`) is run
 - **THEN** the CI/CD service principal holds `USE_SCHEMA`, `CREATE_TABLE` and
   `CREATE_MATERIALIZED_VIEW`, and the human account holds `SELECT`
 
