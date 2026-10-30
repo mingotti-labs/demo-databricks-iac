@@ -19,8 +19,8 @@
 
 - [x] 3.1 Re-check the four schemas hold no tables in `mdp_dev` and `mdp_prd`
 - [x] 3.2 `terraform plan`: 4 to add, 0 to change, 16 to destroy, nothing else
-- [ ] 3.3 Apply with the user's go-ahead
-- [ ] 3.4 Run the checks in design.md's Migration Plan
+- [x] 3.3 Apply with the user's go-ahead
+- [x] 3.4 Run the checks in design.md's Migration Plan
 
 ## 4. Documentation
 
