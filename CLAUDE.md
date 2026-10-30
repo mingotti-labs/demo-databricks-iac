@@ -145,6 +145,8 @@ Naming: see NAMING.md.
   volume. Each holds that source's dated raw files, written by a fetch task and
   read by Auto Loader into append-only raw tables (the dividend story's
   replayable raw). Consumed by `sec-company-facts` in `demo-databricks-mdp`.
+- **`s3_raw`** in `bronze_rba` (`raw-volume-rba`): same shape and grants, the
+  RBA's dated raw files. Consumed by `rba-rates` in `demo-databricks-mdp`.
 
 ## Bronze schema shape
 

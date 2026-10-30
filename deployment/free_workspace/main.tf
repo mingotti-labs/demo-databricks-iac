@@ -342,6 +342,32 @@ resource "databricks_grants" "wikipedia_volume_use" {
   }
 }
 
+module "rba_volume" {
+  source   = "../../modules/databricks-uc-volume"
+  for_each = var.environments
+
+  catalog_name = module.unity_catalog[each.key].catalog_name
+  schema_name  = "bronze_rba"
+  volume_name  = "s3_raw"
+
+  depends_on = [module.unity_catalog]
+}
+
+resource "databricks_grants" "rba_volume_use" {
+  for_each = var.environments
+  volume   = "${module.unity_catalog[each.key].catalog_name}.bronze_rba.${module.rba_volume[each.key].volume_name}"
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
+
+  grant {
+    principal  = var.human_account_username
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
+}
+
 module "git_repo_iac" {
   source = "../../modules/databricks-git-repo"
 
