@@ -28,6 +28,7 @@ module "unity_catalog" {
   catalog_name = each.value.catalog_name
   bucket_name  = module.aws_s3[each.key].bucket_name
   iam_role_arn = module.aws_s3[each.key].iam_role_arn
+  schemas      = local.schemas
 }
 
 module "identity_governance" {
@@ -68,12 +69,63 @@ resource "databricks_grants" "cicd_catalog_use" {
 }
 
 locals {
-  # Bronze-family schemas any CI/CD-run pipeline in this project writes into.
-  # Kept in sync manually with modules/databricks-unity-catalog's local.schemas
-  # -- see that module for the authoritative schema list.
+  # Differs from the module's default (the single_workspace list) to stay under
+  # Free Edition's 50-schemas-per-catalog quota: one silver_landing schema for
+  # every source instead of one per source, and no Atlas schemas.
+  schemas = {
+    bronze_neon                = "Raw Neon Postgres ingestion landing zone"
+    bronze_neon_publish        = "Publish-ready view of Neon bronze data (incl. SCD1/SCD2 tables)"
+    bronze_clickstream         = "Raw clickstream file-drop ingestion landing zone"
+    bronze_clickstream_publish = "Publish-ready view of clickstream bronze data (incl. SCD1 table)"
+    bronze_ungm                = "Raw UNGM API ingestion landing zone"
+    bronze_ungm_publish        = "Publish-ready view of UNGM bronze data (incl. SCD1/SCD2 tables)"
+    bronze_acnc                = "Raw ACNC Charity Register ingestion landing zone"
+    bronze_acnc_publish        = "Publish-ready view of ACNC bronze data (incl. SCD1/SCD2 tables)"
+    bronze_nsw_spatial         = "Raw NSW Spatial Services ingestion landing zone"
+    bronze_nsw_spatial_publish = "Publish-ready view of NSW Spatial Services bronze data (incl. SCD1/SCD2 tables)"
+    bronze_airroi              = "Raw AirROI market intelligence ingestion landing zone"
+    bronze_airroi_publish      = "Publish-ready view of AirROI bronze data (incl. SCD2 table)"
+    bronze_iso                 = "Raw ISO 3166 country/subdivision reference ingestion landing zone"
+    bronze_iso_publish         = "Publish-ready view of ISO 3166 bronze data (incl. SCD1/SCD2 tables)"
+    bronze_geonames            = "Raw GeoNames gazetteer reference ingestion landing zone"
+    bronze_geonames_publish    = "Publish-ready view of GeoNames bronze data (incl. SCD2 tables)"
+    silver_landing_neon        = "Source-aligned Silver Landing for Neon (customers, products, orders, order_items)"
+    silver_landing_clickstream = "Source-aligned Silver Landing for clickstream (web_events)"
+    silver_landing_ungm        = "Source-aligned Silver Landing for UNGM (unspsc_public)"
+    silver_landing_acnc        = "Source-aligned Silver Landing for ACNC (charity_register)"
+    silver_landing_nsw_spatial = "Source-aligned Silver Landing for NSW Spatial Services (property)"
+    silver_landing_airroi      = "Source-aligned Silver Landing for AirROI (market_metrics_all, market_summary)"
+    silver_landing_iso         = "Source-aligned Silver Landing for ISO 3166 (country_codes, subdivision_codes)"
+    silver_landing_geonames    = "Source-aligned Silver Landing for GeoNames (country_info, admin1_codes, admin2_codes, cities)"
+    silver_landing             = "Source-aligned Silver Landing for every source; tables are named <source>__<entity>"
+    silver_normalised_airroi   = "Source-aligned Silver Normalised for AirROI (3NF + extracted entities)"
+    silver_normalised_acnc     = "Source-aligned Silver Normalised for ACNC (3NF + extracted entities, bridges)"
+    bronze_wikipedia           = "Raw Wikipedia S&P 500 list (CIK, date added) ingestion landing zone"
+    bronze_wikipedia_publish   = "Publish-ready view of wikipedia bronze data (incl. SCD tables)"
+    silver_landing_wikipedia   = "Source-aligned Silver Landing for wikipedia"
+    bronze_sec                 = "Raw SEC EDGAR (ticker to CIK, company facts) ingestion landing zone"
+    bronze_sec_publish         = "Publish-ready view of sec bronze data (incl. SCD tables)"
+    silver_landing_sec         = "Source-aligned Silver Landing for sec"
+    bronze_yahoo               = "Raw Yahoo Finance (prices, dividends, options activity) ingestion landing zone"
+    bronze_yahoo_publish       = "Publish-ready view of yahoo bronze data (incl. SCD tables)"
+    silver_landing_yahoo       = "Source-aligned Silver Landing for yahoo"
+    bronze_rba                 = "Raw RBA (AUD exchange rates, cash rate) ingestion landing zone"
+    bronze_rba_publish         = "Publish-ready view of rba bronze data (incl. SCD tables)"
+    bronze_fred                = "Raw FRED (US 10-year Treasury yield) ingestion landing zone"
+    bronze_fred_publish        = "Publish-ready view of fred bronze data (incl. SCD tables)"
+    bronze_portfolio           = "Raw purchases file landing zone (the user's CSV)"
+    bronze_portfolio_publish   = "Publish-ready view of portfolio bronze data (incl. SCD tables)"
+    silver_landing_portfolio   = "Source-aligned Silver Landing for portfolio"
+    silver_investments         = "Silver Domain: conformed companies, dividends, prices, fundamentals and rates for the dividend portfolio story"
+    gold_analytics_gateway     = "Analytics-facing gold layer"
+    gold_integration_gateway   = "Integration-facing gold layer"
+    gold_ai_gateway            = "AI/ML-facing gold layer"
+  }
+
+  # Schemas any CI/CD-run pipeline in this project writes into. Kept in sync
+  # manually with local.schemas above.
   cicd_writable_schemas = [
     "bronze_neon", "bronze_neon_publish",
-    "bronze_atlas", "bronze_atlas_publish",
     "bronze_clickstream", "bronze_clickstream_publish",
     "bronze_ungm", "bronze_ungm_publish",
     "bronze_acnc", "bronze_acnc_publish",
@@ -85,12 +137,13 @@ locals {
     "silver_landing_ungm", "silver_landing_acnc",
     "silver_landing_nsw_spatial", "silver_landing_airroi",
     "silver_landing_iso", "silver_landing_geonames",
+    "silver_landing",
     "silver_normalised_airroi", "silver_normalised_acnc",
     "bronze_wikipedia", "bronze_wikipedia_publish", "silver_landing_wikipedia",
     "bronze_sec", "bronze_sec_publish", "silver_landing_sec",
     "bronze_yahoo", "bronze_yahoo_publish", "silver_landing_yahoo",
-    "bronze_rba", "bronze_rba_publish", "silver_landing_rba",
-    "bronze_fred", "bronze_fred_publish", "silver_landing_fred",
+    "bronze_rba", "bronze_rba_publish",
+    "bronze_fred", "bronze_fred_publish",
     "bronze_portfolio", "bronze_portfolio_publish", "silver_landing_portfolio",
     "silver_investments",
   ]
