@@ -160,6 +160,11 @@ have been. See `phase3b-bronze-schema-simplification`'s design.md for the full
 reasoning. SCD1/SCD2 tables themselves are built in `demo-databricks-mdp`, not
 here — this repo only provisions the schema.
 
+`bronze_atlas`/`bronze_atlas_publish` were removed from the free workspace by
+`free-silver-landing-schema` (empty, never used by `demo-databricks-mdp`) to
+make room under the schema quota. The Atlas project, `modules/atlas/` and the
+`atlas-mongodb` scope stay; recreate the schemas when Atlas is ingested.
+
 **`bronze_ungm`/`bronze_ungm_publish`** (Phase 3c, UNGM UNSPSC API): the
 smallest source-system onboarding so far — the UNGM public API needs no
 credential, connection, or volume, just the schema pair. Consumed by an
@@ -259,6 +264,19 @@ of writing). Consumed by `demo-databricks-mdp`'s
 `raw-volumes-sec-yahoo-wikipedia` then removed the `fmp` and `reference` schemas
 (empty, never used: FMP was dropped after its probe and the reference settings
 live in `portfolio`).
+
+`free-silver-landing-schema` added one `silver_landing` schema to the **free
+workspace only**: Free Edition caps each catalog at **50 schemas**
+(`databricks resource-quotas get-quota catalog <catalog> schema-quota`; the
+count refreshes with a lag of minutes after a drop, so a create right after a
+drop can still fail on the old count). Every source's Silver Landing tables
+move into it as `<source>__<entity>`; the per-source `silver_landing_<s>`
+schemas are dropped once `demo-databricks-mdp` has moved their tables. The
+free workspace therefore passes its own schema map (`local.schemas` in
+`deployment/free_workspace/main.tf`) to `modules/databricks-unity-catalog`,
+whose default map is the `single_workspace` list, which keeps one Landing
+schema per source. Keep `local.schemas` and `local.cicd_writable_schemas` in
+step.
 
 ## Pattern schemas
 

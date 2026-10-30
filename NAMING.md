@@ -44,6 +44,14 @@ of each — this file covers naming only.
   bucket (the same one backing the catalog's `storage_root`/external location)
   — no new bucket, storage credential, or external location per source system.
 
+## Silver Landing schema
+
+- Free workspace: one `silver_landing` schema per catalog; tables are named
+  `<source>__<entity>` (double underscore), e.g.
+  `mdp_dev.silver_landing.acnc__charity_register`.
+- `single_workspace` reference: one `silver_landing_<source>` schema per
+  source, tables named `<entity>`.
+
 ## Pattern schemas
 
 - `pattern_<layer>` (`pattern_bronze`, `pattern_bronze_publish`, ...) in the dev
