@@ -89,33 +89,21 @@ locals {
     bronze_iso_publish         = "Publish-ready view of ISO 3166 bronze data (incl. SCD1/SCD2 tables)"
     bronze_geonames            = "Raw GeoNames gazetteer reference ingestion landing zone"
     bronze_geonames_publish    = "Publish-ready view of GeoNames bronze data (incl. SCD2 tables)"
-    silver_landing_neon        = "Source-aligned Silver Landing for Neon (customers, products, orders, order_items)"
-    silver_landing_clickstream = "Source-aligned Silver Landing for clickstream (web_events)"
-    silver_landing_ungm        = "Source-aligned Silver Landing for UNGM (unspsc_public)"
-    silver_landing_acnc        = "Source-aligned Silver Landing for ACNC (charity_register)"
-    silver_landing_nsw_spatial = "Source-aligned Silver Landing for NSW Spatial Services (property)"
-    silver_landing_airroi      = "Source-aligned Silver Landing for AirROI (market_metrics_all, market_summary)"
-    silver_landing_iso         = "Source-aligned Silver Landing for ISO 3166 (country_codes, subdivision_codes)"
-    silver_landing_geonames    = "Source-aligned Silver Landing for GeoNames (country_info, admin1_codes, admin2_codes, cities)"
     silver_landing             = "Source-aligned Silver Landing for every source; tables are named <source>__<entity>"
     silver_normalised_airroi   = "Source-aligned Silver Normalised for AirROI (3NF + extracted entities)"
     silver_normalised_acnc     = "Source-aligned Silver Normalised for ACNC (3NF + extracted entities, bridges)"
     bronze_wikipedia           = "Raw Wikipedia S&P 500 list (CIK, date added) ingestion landing zone"
     bronze_wikipedia_publish   = "Publish-ready view of wikipedia bronze data (incl. SCD tables)"
-    silver_landing_wikipedia   = "Source-aligned Silver Landing for wikipedia"
     bronze_sec                 = "Raw SEC EDGAR (ticker to CIK, company facts) ingestion landing zone"
     bronze_sec_publish         = "Publish-ready view of sec bronze data (incl. SCD tables)"
-    silver_landing_sec         = "Source-aligned Silver Landing for sec"
     bronze_yahoo               = "Raw Yahoo Finance (prices, dividends, options activity) ingestion landing zone"
     bronze_yahoo_publish       = "Publish-ready view of yahoo bronze data (incl. SCD tables)"
-    silver_landing_yahoo       = "Source-aligned Silver Landing for yahoo"
     bronze_rba                 = "Raw RBA (AUD exchange rates, cash rate) ingestion landing zone"
     bronze_rba_publish         = "Publish-ready view of rba bronze data (incl. SCD tables)"
     bronze_fred                = "Raw FRED (US 10-year Treasury yield) ingestion landing zone"
     bronze_fred_publish        = "Publish-ready view of fred bronze data (incl. SCD tables)"
     bronze_portfolio           = "Raw purchases file landing zone (the user's CSV)"
     bronze_portfolio_publish   = "Publish-ready view of portfolio bronze data (incl. SCD tables)"
-    silver_landing_portfolio   = "Source-aligned Silver Landing for portfolio"
     silver_investments         = "Silver Domain: conformed companies, dividends, prices, fundamentals and rates for the dividend portfolio story"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
@@ -133,18 +121,14 @@ locals {
     "bronze_airroi", "bronze_airroi_publish",
     "bronze_iso", "bronze_iso_publish",
     "bronze_geonames", "bronze_geonames_publish",
-    "silver_landing_neon", "silver_landing_clickstream",
-    "silver_landing_ungm", "silver_landing_acnc",
-    "silver_landing_nsw_spatial", "silver_landing_airroi",
-    "silver_landing_iso", "silver_landing_geonames",
     "silver_landing",
     "silver_normalised_airroi", "silver_normalised_acnc",
-    "bronze_wikipedia", "bronze_wikipedia_publish", "silver_landing_wikipedia",
-    "bronze_sec", "bronze_sec_publish", "silver_landing_sec",
-    "bronze_yahoo", "bronze_yahoo_publish", "silver_landing_yahoo",
+    "bronze_wikipedia", "bronze_wikipedia_publish",
+    "bronze_sec", "bronze_sec_publish",
+    "bronze_yahoo", "bronze_yahoo_publish",
     "bronze_rba", "bronze_rba_publish",
     "bronze_fred", "bronze_fred_publish",
-    "bronze_portfolio", "bronze_portfolio_publish", "silver_landing_portfolio",
+    "bronze_portfolio", "bronze_portfolio_publish",
     "silver_investments",
   ]
   cicd_schema_grants = {

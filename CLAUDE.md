@@ -270,8 +270,9 @@ workspace only**: Free Edition caps each catalog at **50 schemas**
 (`databricks resource-quotas get-quota catalog <catalog> schema-quota`; the
 count refreshes with a lag of minutes after a drop, so a create right after a
 drop can still fail on the old count). Every source's Silver Landing tables
-move into it as `<source>__<entity>`; the per-source `silver_landing_<s>`
-schemas are dropped once `demo-databricks-mdp` has moved their tables. The
+move into it as `<source>__<entity>`. `free-drop-old-landing-schemas` then
+dropped the twelve per-source `silver_landing_<s>` schemas from the free
+workspace, once `demo-databricks-mdp` had moved their tables. The
 free workspace therefore passes its own schema map (`local.schemas` in
 `deployment/free_workspace/main.tf`) to `modules/databricks-unity-catalog`,
 whose default map is the `single_workspace` list, which keeps one Landing
