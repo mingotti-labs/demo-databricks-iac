@@ -147,6 +147,9 @@ Naming: see NAMING.md.
   replayable raw). Consumed by `sec-company-facts` in `demo-databricks-mdp`.
 - **`s3_raw`** in `bronze_rba` (`raw-volume-rba`): same shape and grants, the
   RBA's dated raw files. Consumed by `rba-rates` in `demo-databricks-mdp`.
+- **`s3_raw`** in `bronze_fred` (`raw-volume-fred`): same shape and grants, FRED's
+  dated raw files. Consumed by `fred-rates` in `demo-databricks-mdp`; the `fred`
+  secret scope (`api_key`) already existed.
 
 ## Bronze schema shape
 
