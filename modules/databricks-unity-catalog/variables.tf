@@ -63,7 +63,7 @@ variable "schemas" {
     bronze_portfolio           = "Raw purchases file landing zone (the user's CSV)"
     bronze_portfolio_publish   = "Publish-ready view of portfolio bronze data (incl. SCD tables)"
     silver_landing_portfolio   = "Source-aligned Silver Landing for portfolio"
-    silver_investments         = "Silver Domain: conformed companies, dividends, prices, fundamentals and rates for the dividend portfolio story"
+    silver_domain_investments  = "Silver Domain: conformed companies, dividends, prices, fundamentals and rates for the dividend portfolio story"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
     gold_ai_gateway            = "AI/ML-facing gold layer"

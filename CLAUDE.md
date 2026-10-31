@@ -269,6 +269,9 @@ of writing). Consumed by `demo-databricks-mdp`'s
 `raw-volumes-sec-yahoo-wikipedia` then removed the `fmp` and `reference` schemas
 (empty, never used: FMP was dropped after its probe and the reference settings
 live in `portfolio`).
+`silver-domain-investments-schema` replaced the empty `silver_investments` with
+`silver_domain_investments`: Silver Domain schemas are named
+`silver_domain_<domain>` (user, 2026-10-31).
 
 `free-silver-landing-schema` added one `silver_landing` schema to the **free
 workspace only**: Free Edition caps each catalog at **50 schemas**
