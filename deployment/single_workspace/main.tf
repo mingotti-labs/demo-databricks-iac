@@ -92,7 +92,7 @@ locals {
     "bronze_rba", "bronze_rba_publish", "silver_landing_rba",
     "bronze_fred", "bronze_fred_publish", "silver_landing_fred",
     "bronze_portfolio", "bronze_portfolio_publish", "silver_landing_portfolio",
-    "silver_investments",
+    "silver_domain_investments",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :

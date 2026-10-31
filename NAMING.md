@@ -52,6 +52,11 @@ of each — this file covers naming only.
 - `single_workspace` reference: one `silver_landing_<source>` schema per
   source, tables named `<entity>`.
 
+## Silver Domain schema
+
+- `silver_domain_<domain>`, one per domain, created only once a story defines
+  the domain (e.g. `silver_domain_investments`). Same in both deployments.
+
 ## Pattern schemas
 
 - `pattern_<layer>` (`pattern_bronze`, `pattern_bronze_publish`, ...) in the dev

@@ -104,7 +104,7 @@ locals {
     bronze_fred_publish        = "Publish-ready view of fred bronze data (incl. SCD tables)"
     bronze_portfolio           = "Raw purchases file landing zone (the user's CSV)"
     bronze_portfolio_publish   = "Publish-ready view of portfolio bronze data (incl. SCD tables)"
-    silver_investments         = "Silver Domain: conformed companies, dividends, prices, fundamentals and rates for the dividend portfolio story"
+    silver_domain_investments  = "Silver Domain: conformed companies, dividends, prices, fundamentals and rates for the dividend portfolio story"
     gold_analytics_gateway     = "Analytics-facing gold layer"
     gold_integration_gateway   = "Integration-facing gold layer"
     gold_ai_gateway            = "AI/ML-facing gold layer"
@@ -129,7 +129,7 @@ locals {
     "bronze_rba", "bronze_rba_publish",
     "bronze_fred", "bronze_fred_publish",
     "bronze_portfolio", "bronze_portfolio_publish",
-    "silver_investments",
+    "silver_domain_investments",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :
