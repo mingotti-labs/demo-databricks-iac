@@ -17,8 +17,8 @@
 
 - [x] 3.1 `terraform plan` on `free_workspace` shown in full: only the schema
       and its grants are replaced, nothing else changes
-- [ ] 3.2 Apply after the user's go-ahead; a fresh plan shows no changes
-- [ ] 3.3 Verify: `silver_domain_investments` listed and `silver_investments`
+- [x] 3.2 Apply after the user's go-ahead; a fresh plan shows no changes
+- [x] 3.3 Verify: `silver_domain_investments` listed and `silver_investments`
       not, in both catalogs; the CI/CD principal holds `USE_SCHEMA`,
       `CREATE_TABLE`, `CREATE_MATERIALIZED_VIEW`, the human account `SELECT`;
       schema quota unchanged
