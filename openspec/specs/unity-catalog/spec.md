@@ -46,10 +46,11 @@ Each catalog SHALL contain the schemas `bronze_neon`, `bronze_neon_publish`,
 `gold_integration_gateway`, and `gold_ai_gateway`; and, for the dividend
 portfolio story, `bronze_<s>`, `bronze_<s>_publish` and `silver_landing_<s>`
 for each `<s>` of `wikipedia`, `sec`, `yahoo`, `rba`, `fred` and `portfolio`,
-plus the Silver Domain schema `silver_investments`. No `fmp` or `reference`
+plus the Silver Domain schema `silver_domain_investments`. No `fmp` or `reference`
 schema SHALL exist (FMP was dropped after its probe; reference data lives in
-`portfolio`). A Silver Domain schema SHALL exist only once a story defines its
-domain; `silver_investments` is the first. No `bronze_<source>_history` schema
+`portfolio`). A Silver Domain schema SHALL be named `silver_domain_<domain>` and SHALL
+exist only once a story defines its domain; `silver_domain_investments` is the
+first. No `silver_investments` schema SHALL exist. No `bronze_<source>_history` schema
 SHALL exist — full change history/CDC replay, where needed, is modeled as
 `<table>_scd2` inside the source's `_publish` schema instead.
 
@@ -64,7 +65,7 @@ each named `<source>__<entity>`. `single_workspace` keeps the list above.
   catalog of `single_workspace`
 - **THEN** all fifty schemas listed above are present in each catalog, no
   `fmp` or `reference` schema is present, no Silver Domain schema other than
-  `silver_investments` is present, and no `bronze_<source>_history` schema is
+  `silver_domain_investments` is present, `silver_investments` is not, and no `bronze_<source>_history` schema is
   present
 
 #### Scenario: Free workspace has one Silver Landing schema for new sources
@@ -79,7 +80,7 @@ each named `<source>__<entity>`. `single_workspace` keeps the list above.
 - **THEN** `quota_count` is below `quota_limit` (50) for both
 
 #### Scenario: CI/CD principal can build tables in the story's schemas
-- **WHEN** `databricks grants get schema <catalog>.silver_investments` (or any
+- **WHEN** `databricks grants get schema <catalog>.silver_domain_investments` (or any
   of the story's new schemas, or `silver_landing`) is run
 - **THEN** the CI/CD service principal holds `USE_SCHEMA`, `CREATE_TABLE` and
   `CREATE_MATERIALIZED_VIEW`, and the human account holds `SELECT`
