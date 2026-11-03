@@ -15,8 +15,8 @@
 ## 3. Plan and apply
 
 - [x] 3.1 `terraform plan` on `free_workspace`: 12 to add, nothing else
-- [ ] 3.2 Apply with the user's go-ahead
-- [ ] 3.3 Run the checks in design.md's Migration Plan
+- [x] 3.2 Apply with the user's go-ahead
+- [x] 3.3 Run the checks in design.md's Migration Plan
 
 ## 4. Documentation
 
