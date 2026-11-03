@@ -45,7 +45,7 @@ Each catalog SHALL contain the schemas `bronze_neon`, `bronze_neon_publish`,
 `silver_normalised_acnc`, `gold_analytics_gateway`,
 `gold_integration_gateway`, and `gold_ai_gateway`; and, for the dividend
 portfolio story, `bronze_<s>`, `bronze_<s>_publish` and `silver_landing_<s>`
-for each `<s>` of `wikipedia`, `sec`, `yahoo`, `rba`, `fred` and `portfolio`,
+for each `<s>` of `wikipedia`, `sec`, `yahoo`, `rba`, `fred`, `portfolio` and `abs`,
 plus the Silver Domain schema `silver_domain_investments`. No `fmp` or `reference`
 schema SHALL exist (FMP was dropped after its probe; reference data lives in
 `portfolio`). A Silver Domain schema SHALL be named `silver_domain_<domain>` and SHALL
@@ -63,7 +63,7 @@ each named `<source>__<entity>`. `single_workspace` keeps the list above.
 #### Scenario: All nine schemas present per catalog
 - **WHEN** `databricks schemas list <catalog>` is run for each environment
   catalog of `single_workspace`
-- **THEN** all fifty schemas listed above are present in each catalog, no
+- **THEN** all fifty-three schemas listed above are present in each catalog, no
   `fmp` or `reference` schema is present, no Silver Domain schema other than
   `silver_domain_investments` is present, `silver_investments` is not, and no `bronze_<source>_history` schema is
   present
