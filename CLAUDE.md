@@ -150,6 +150,9 @@ Naming: see NAMING.md.
 - **`s3_raw`** in `bronze_fred` (`raw-volume-fred`): same shape and grants, FRED's
   dated raw files. Consumed by `fred-rates` in `demo-databricks-mdp`; the `fred`
   secret scope (`api_key`) already existed.
+- **`s3_raw`** in `bronze_abs` (`abs-schemas-volume`): same shape and grants, the
+  ABS's dated raw CPI files. Consumed by `abs-cpi` in `demo-databricks-mdp`; the ABS
+  API needs no key, so there is no secret scope.
 
 ## Bronze schema shape
 
@@ -272,6 +275,8 @@ live in `portfolio`).
 `silver-domain-investments-schema` replaced the empty `silver_investments` with
 `silver_domain_investments`: Silver Domain schemas are named
 `silver_domain_<domain>` (user, 2026-10-31).
+`abs-schemas-volume` added `bronze_abs` and `bronze_abs_publish` (plus
+`silver_landing_abs` in `single_workspace` only) for the Australian CPI source.
 
 `free-silver-landing-schema` added one `silver_landing` schema to the **free
 workspace only**: Free Edition caps each catalog at **50 schemas**
