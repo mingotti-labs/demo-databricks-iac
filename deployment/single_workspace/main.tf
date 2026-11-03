@@ -91,6 +91,7 @@ locals {
     "bronze_yahoo", "bronze_yahoo_publish", "silver_landing_yahoo",
     "bronze_rba", "bronze_rba_publish", "silver_landing_rba",
     "bronze_fred", "bronze_fred_publish", "silver_landing_fred",
+    "bronze_abs", "bronze_abs_publish", "silver_landing_abs",
     "bronze_portfolio", "bronze_portfolio_publish", "silver_landing_portfolio",
     "silver_domain_investments",
   ]
@@ -345,6 +346,32 @@ module "fred_volume" {
 resource "databricks_grants" "fred_volume_use" {
   for_each = var.environments
   volume   = "${module.unity_catalog[each.key].catalog_name}.bronze_fred.${module.fred_volume[each.key].volume_name}"
+
+  grant {
+    principal  = module.identity_governance.cicd_client_id
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
+
+  grant {
+    principal  = var.human_account_username
+    privileges = ["READ_VOLUME", "WRITE_VOLUME"]
+  }
+}
+
+module "abs_volume" {
+  source   = "../../modules/databricks-uc-volume"
+  for_each = var.environments
+
+  catalog_name = module.unity_catalog[each.key].catalog_name
+  schema_name  = "bronze_abs"
+  volume_name  = "s3_raw"
+
+  depends_on = [module.unity_catalog]
+}
+
+resource "databricks_grants" "abs_volume_use" {
+  for_each = var.environments
+  volume   = "${module.unity_catalog[each.key].catalog_name}.bronze_abs.${module.abs_volume[each.key].volume_name}"
 
   grant {
     principal  = module.identity_governance.cicd_client_id
