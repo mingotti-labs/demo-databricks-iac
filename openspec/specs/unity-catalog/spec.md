@@ -60,6 +60,10 @@ The `free_workspace` deployment differs, to stay under Free Edition's
 contain one `silver_landing` schema for every source's Silver Landing tables,
 each named `<source>__<entity>`. `single_workspace` keeps the list above.
 
+The CI/CD service principal SHALL hold `USE_SCHEMA`, `CREATE_TABLE` and
+`CREATE_MATERIALIZED_VIEW` on `gold_analytics_gateway`, and the human account `SELECT`, in
+both deployments, so mdp's gold pipelines can build it (the market climate story is the first).
+
 #### Scenario: All nine schemas present per catalog
 - **WHEN** `databricks schemas list <catalog>` is run for each environment
   catalog of `single_workspace`
@@ -82,6 +86,12 @@ each named `<source>__<entity>`. `single_workspace` keeps the list above.
 #### Scenario: CI/CD principal can build tables in the story's schemas
 - **WHEN** `databricks grants get schema <catalog>.silver_domain_investments` (or any
   of the story's new schemas, or `silver_landing`) is run
+- **THEN** the CI/CD service principal holds `USE_SCHEMA`, `CREATE_TABLE` and
+  `CREATE_MATERIALIZED_VIEW`, and the human account holds `SELECT`
+
+#### Scenario: CI/CD principal can build gold analytics tables
+- **WHEN** `databricks grants get schema <catalog>.gold_analytics_gateway` is run for
+  `mdp_dev` and `mdp_prd`
 - **THEN** the CI/CD service principal holds `USE_SCHEMA`, `CREATE_TABLE` and
   `CREATE_MATERIALIZED_VIEW`, and the human account holds `SELECT`
 
