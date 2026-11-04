@@ -94,6 +94,7 @@ locals {
     "bronze_abs", "bronze_abs_publish", "silver_landing_abs",
     "bronze_portfolio", "bronze_portfolio_publish", "silver_landing_portfolio",
     "silver_domain_investments",
+    "gold_analytics_gateway",
   ]
   cicd_schema_grants = {
     for pair in setproduct(keys(var.environments), local.cicd_writable_schemas) :
