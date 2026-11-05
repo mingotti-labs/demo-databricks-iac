@@ -25,8 +25,12 @@ resource "databricks_service_principal" "cicd_github" {
   # Minimal entitlement a bundle deploy actually needs, per the 403 a real
   # `bundle deploy` attempt returned: "disabled for users without the
   # databricks-sql-access or workspace-access or workspace-consume entitlements".
-  # workspace_access is the narrowest of the three that satisfies the check.
-  workspace_access = true
+  # workspace_access is the narrowest of the three that satisfies the check, and
+  # is enough for pipelines, jobs and dashboards. Reading a Genie agent back on a
+  # later deploy (and looking a SQL warehouse up by name) returns 403 "aclPath
+  # entitlement: /sqlanalytics" without databricks_sql_access.
+  workspace_access      = true
+  databricks_sql_access = true
 }
 
 resource "databricks_service_principal_secret" "cicd_github" {
