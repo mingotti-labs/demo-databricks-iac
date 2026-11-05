@@ -8,9 +8,9 @@
 
 - [x] 2.1 `terraform plan` on `free_workspace` shown in full: one in-place update of the service principal,
       no replace, nothing else
-- [ ] 2.2 Apply after the user's go-ahead; a fresh plan shows no changes
-- [ ] 2.3 Verify: `databricks service-principals get` lists `databricks-sql-access` and `workspace-access`
+- [x] 2.2 Apply after the user's go-ahead; a fresh plan shows no changes
+- [x] 2.3 Verify: `databricks service-principals get` lists `databricks-sql-access` and `workspace-access`
 
 ## 3. Confirm it fixes the Genie deploy
 
-- [ ] 3.1 Re-run `demo-databricks-mdp` PR #174's `deploy-dev`: it passes (the agent is read back and updated)
+- [x] 3.1 Re-run `demo-databricks-mdp` PR #174's `deploy-dev`: it passes (the agent is read back and updated)
